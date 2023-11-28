@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 const AppBreadCrumbs = () => {
   const location = useLocation();
   const itemsList = location.pathname.split("/").filter((path) => path !== "");
-  console.log(itemsList);
+  // console.log(itemsList);
 
   return (
     <Breadcrumbs aria-label="breadcrumb">
@@ -17,10 +17,12 @@ const AppBreadCrumbs = () => {
       {itemsList?.map((item, index) =>
         index < itemsList.length - 1 ? (
           <Link key={index} underline="hover" color="inherit" to={`/${item}`}>
-            {item}
+            {item[0].toUpperCase() + item.slice(1, item.length)}
           </Link>
         ) : (
-          <Typography color="text.primary">{item}</Typography>
+          <Typography color="text.primary">
+            {item[0].toUpperCase() + item.slice(1, item.length)}
+          </Typography>
         )
       )}
     </Breadcrumbs>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../../api";
 import { DataGrid } from "@mui/x-data-grid";
 import columns from "./tableColumns";
+import { useParams } from "react-router-dom";
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
@@ -16,7 +17,10 @@ const Dashboard = () => {
     getUsersData();
   }, []);
 
-  console.log("Welcome to the Site.");
+  const { clientCode, sessionKey } = useParams();
+  console.log("clientCodeAnil", clientCode);
+  console.log("sessionKeYAnil", sessionKey);
+
   return (
     <div
       style={{
