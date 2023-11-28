@@ -15,6 +15,8 @@ const Dashboard = () => {
   useEffect(() => {
     getUsersData();
   }, []);
+
+  console.log("Welcome to the Site.");
   return (
     <div
       style={{
