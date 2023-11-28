@@ -16,7 +16,7 @@ const AppBreadCrumbs = () => {
 
       {itemsList?.map((item, index) =>
         index < itemsList.length - 1 ? (
-          <Link key={index} underline="hover" color="inherit" to={`/${item}`}>
+          <Link key={index} underline="hover" color="silver" to={`/${item}`}>
             {item[0].toUpperCase() + item.slice(1, item.length)}
           </Link>
         ) : (

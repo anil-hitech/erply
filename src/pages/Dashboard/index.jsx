@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../../api";
 import { DataGrid } from "@mui/x-data-grid";
 import columns from "./tableColumns";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
@@ -17,9 +17,8 @@ const Dashboard = () => {
     getUsersData();
   }, []);
 
-  const { clientCode, sessionKey } = useParams();
-  console.log("clientCodeAnil", clientCode);
-  console.log("sessionKeYAnil", sessionKey);
+  const [params] = useSearchParams();
+  console.log("clientCodeAnil", params);
 
   return (
     <div
