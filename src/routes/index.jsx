@@ -1,5 +1,5 @@
-import Dashboard from "../pages/dashboard";
-import Orders from "../pages/orders";
+import Dashboard from "../pages/Dashboard";
+import Orders from "../pages/Orders";
 
 export const routes = [
   {
