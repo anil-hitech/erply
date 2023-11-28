@@ -69,7 +69,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-export default function AppDrawer() {
+export default function Drawer() {
   const theme = useTheme();
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(true);

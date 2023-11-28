@@ -1,11 +1,10 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
-import AppDrawer from "../components/drawer";
+import Drawer from "../components/drawer";
 
 const Layout = () => {
   return (
     <div className="flex flex-row ">
-      <AppDrawer />
+      <Drawer />
     </div>
   );
 };
