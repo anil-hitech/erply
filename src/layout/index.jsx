@@ -1,10 +1,10 @@
 import React from "react";
-import Drawer from "../components/drawer";
+import AppDrawer from "../components/AppDrawer";
 
 const Layout = () => {
   return (
     <div className="flex flex-row ">
-      <Drawer />
+      <AppDrawer />
     </div>
   );
 };

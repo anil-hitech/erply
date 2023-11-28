@@ -1,7 +1,7 @@
 import * as React from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
+import DrawerMui from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -69,7 +69,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-export default function Drawer() {
+export default function AppDrawer() {
   const theme = useTheme();
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
@@ -100,7 +100,7 @@ export default function Drawer() {
           <AppBreadCrumbs />
         </Toolbar>
       </AppBar>
-      <Drawer
+      <DrawerMui
         sx={{
           width: drawerWidth,
           flexShrink: 0,
@@ -149,7 +149,7 @@ export default function Drawer() {
             </ListItem>
           ))}
         </List>
-      </Drawer>
+      </DrawerMui>
       <Main open={open}>
         <DrawerHeader />
         <Outlet />
