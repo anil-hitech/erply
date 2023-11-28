@@ -22,7 +22,7 @@ const Dashboard = () => {
       }}
     >
       {isLoading ? (
-        "Loading..... LOading......"
+        "Loading..... LOading.."
       ) : (
         <DataGrid
           rows={users}
