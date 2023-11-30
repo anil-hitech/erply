@@ -136,7 +136,8 @@ export default function AppDrawer() {
             </ListItem>
           ))}
         </List>
-        <Divider />
+
+        {/* <Divider />
         <List>
           {["Terms & Condition"].map((text, index) => (
             <ListItem key={index} disablePadding>
@@ -148,7 +149,7 @@ export default function AppDrawer() {
               </ListItemButton>
             </ListItem>
           ))}
-        </List>
+        </List> */}
       </DrawerMui>
       <Main open={open}>
         <DrawerHeader />

@@ -7,7 +7,7 @@ const theme = createTheme({
       main: "#1976d2", // Change primary color
     },
     secondary: {
-      main: "#dc004e", // Change secondary color
+      main: "#1976d2", // Change primary color
     },
     // Add more customizations as needed
   },
