@@ -17,7 +17,7 @@ const Orders = () => {
     await api
       .get(
         `orderReportDetail.php?clientCode=${
-          cleientDetail?.clientCode
+          clientDetail?.clientCode
         }&sessionKey=${clientDetail?.sessionKey}&type=${clientDetail?.get(
           "type1"
         )}&type2=${params.get("type2")}`
