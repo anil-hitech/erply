@@ -16,7 +16,7 @@ const Orders = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [params] = useSearchParams();
-  const clientDetail = JSON.parse(localStorage.getItem("clientDetail"));
+  const clientDetail = JSON.parse(localStorage?.getItem("clientDetail"));
 
   const getUsersData = async () => {
     await api
@@ -27,7 +27,7 @@ const Orders = () => {
           "type1"
         )}&type2=${params.get("type2")}`
       )
-      .then((res) => setUsers(res.data.data));
+      .then((res) => setUsers(res?.data.data));
 
     setIsLoading(false);
   };
