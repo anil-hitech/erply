@@ -14,17 +14,20 @@ const Dashboard = () => {
   const [customersList, setCustomerList] = useState([]);
   const [locations, setLocations] = useState([]);
 
+  const getFilters = (filter) => setSummaryFilter(filter);
+  const handleResetFilters = () => setSummaryFilter(initialFilters);
+  const [timer, setTimer] = useState(null); //to control api call on input change
+
   const [summaryFilter, setSummaryFilter] = useState(initialFilters); //filters for summary data
   const [isLoading, setIsLoading] = useState(true);
 
-  const clientDetail = localStorage.getItem("clientDetail");
+  const clientDetail = JSON.parse(localStorage.getItem("clientDetail"));
 
   //fetching summary_data for dashboard
   const getSummaryData = async () => {
     await api
       .get(
         `orderReportSummary.php?clientCode=${clientDetail?.clientCode}&sessionKey=${clientDetail?.sessionKey}&locationID=${summaryFilter.locationID}&customerID=${summaryFilter.customerID}`
-        // `orderReportSummary.php?clientCode=606950&sessionKey=dc568baf7e419a1da6a104438a65718555d48d2d8174&locationID=${summaryFilter.locationID}&customerID=${summaryFilter.customerID}`
       )
       .then((res) => setReportSummary(res.data));
     setIsLoading(false);
@@ -34,37 +37,38 @@ const Dashboard = () => {
   const getCustomerList = async () => {
     await api
       .post("proxy.php", {
-        clientCode: clientDetail.clientCode, //606950 test code
+        clientCode: clientDetail.clientCode,
         sessionKey: clientDetail.sessionKey,
         request: "getCustomers",
         recordsOnPage: 1000,
         getFields: "customerID,firstName,lastName,fullName",
-        searchNameIncrementally: "ra",
+        searchNameIncrementally: summaryFilter.customerID,
       })
       .then((res) => setCustomerList(res.data.records));
 
     setIsLoading(false);
   };
 
-  const getFilters = (filter) => setSummaryFilter(filter);
-  const handleResetFilters = () => setSummaryFilter(initialFilters);
-
   useEffect(() => {
-    getCustomerList();
     getSummaryData();
+    console.log(clientDetail);
   }, []);
 
-  useEffect(
-    (prev) => {
-      setLocations(reportSummary?.location);
-      console.log(reportSummary);
-    },
-    [reportSummary]
-  );
+  useEffect(() => {
+    // getCustomerList();
+    if (timer) clearTimeout(timer);
 
-  useEffect(() => console.log("filter list", summaryFilter), [summaryFilter]);
+    if (summaryFilter.customerID.length >= 2) {
+      const newTimer = setTimeout(() => getCustomerList(), 500);
+      setTimeout(newTimer);
+      setTimer(newTimer);
+    } else setCustomerList([]);
+  }, [summaryFilter]);
 
-  useEffect(() => console.log(customersList), [customersList]);
+  useEffect(() => {
+    setLocations(reportSummary?.location);
+    // console.log(reportSummary);
+  }, [reportSummary]);
 
   return (
     <Box
@@ -80,7 +84,7 @@ const Dashboard = () => {
         locations={locations}
         customers={customersList}
         getFilters={getFilters}
-        handleFilter={getSummaryData}
+        handleFilter={() => getSummaryData()}
         handleReset={() => handleResetFilters}
       />
       <PreviewSection data={reportSummary} />

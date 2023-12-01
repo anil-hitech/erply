@@ -11,19 +11,16 @@ const Orders = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [params] = useSearchParams();
-  const clientDetail = localStorage.getItem("clientDetail");
+  const clientDetail = JSON.parse(localStorage.getItem("clientDetail"));
 
   const getUsersData = async () => {
     await api
       .get(
         `orderReportDetail.php?clientCode=${
           clientDetail?.clientCode
-        }&sessionKey=${clientDetail?.sessionKey}&type=${clientDetail?.get(
+        }&sessionKey=${clientDetail?.sessionKey}&type=${params?.get(
           "type1"
         )}&type2=${params.get("type2")}`
-        // `orderReportDetail.php?clientCode=606950&sessionKey=dc568baf7e419a1da6a104438a65718555d48d2d8174&type=${params.get(
-        //   "type1"
-        // )}&type2=${params.get("type2")}`
       )
       .then((res) => setUsers(res.data.data));
 

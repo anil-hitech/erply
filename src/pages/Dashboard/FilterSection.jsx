@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import uniqid from "uniqid";
 import {
+  Autocomplete,
   Box,
   Button,
   FormControl,
@@ -23,6 +25,11 @@ const FilterSection = ({
 }) => {
   const [filters, setFilters] = useState(initialFilters);
 
+  const handleTextField = useCallback(
+    (e) => setFilters((prev) => ({ ...prev, customerID: e?.target.value })),
+    [filters]
+  );
+
   useEffect(() => {
     getFilters(filters);
     console.log("filters", filters);
@@ -35,32 +42,51 @@ const FilterSection = ({
       gap={"20px"}
       alignSelf={"center"}
     >
-      <FormControl>
+      {/* <FormControl>
         <InputLabel id="demo-simple-select-label">Customer Filter</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={filters.customer}
+          value={filters.customerID}
           label="Customer Filter"
           onChange={(e) =>
             setFilters((prev) => ({ ...prev, customerID: e?.target.value }))
           }
+          // onSelect={(e) =>
+          //   setFilters((prev) => ({ ...prev, customerID: e?.target.value }))
+          // }
           sx={{ width: "300px" }}
-        >
+          >
           <MenuItem value="">None</MenuItem>
           {customers?.map((customer, index) => (
             <MenuItem value={customer.customerID} key={index}>
-              {customer.fullName}
+            {customer.fullName}
             </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+            ))}
+            </Select>
+          </FormControl> */}
+
+      <Autocomplete
+        disablePortal
+        id={uniqid()}
+        value={filters.customerID}
+        options={customers?.map((customer) => customer.fullName) || []}
+        sx={{ width: 300 }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Customer Filter"
+            onChange={handleTextField}
+          />
+        )}
+      />
+
       <FormControl>
         <InputLabel id="demo-simple-select-label">Location Filter</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={filters.location}
+          value={filters.locationID}
           label="Location Filter"
           onChange={(e) =>
             setFilters((prev) => ({ ...prev, locationID: e?.target.value }))
