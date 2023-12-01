@@ -7,10 +7,10 @@ const Layout = () => {
   localStorage?.setItem(
     "clientDetail",
     JSON.stringify({
-      clientCode: params?.get("clientCode"),
-      sessionKey: params?.get("sessionKey"),
-      // clientCode: "606950",
-      // sessionKey: "690dfb7ed8157d10ea461544f7d2310af0662ad4b919",
+      // clientCode: params?.get("clientCode"),
+      // sessionKey: params?.get("sessionKey"),
+      clientCode: "606950",
+      sessionKey: "fcbeac150450adfe23c4b6c5ac5fe1f727b087e60cb2",
     })
   );
 
