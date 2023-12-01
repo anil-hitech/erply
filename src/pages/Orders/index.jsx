@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { useSearchParams } from "react-router-dom";
 import uniqid from "uniqid";
 
 import api from "../../api";
+
+import { DataGrid } from "@mui/x-data-grid";
 import columns from "./tableColumns";
-import { useSearchParams } from "react-router-dom";
+
+// import { DataGrid } from "devextreme-react";
+// import { Column, Pager, Paging } from "devextreme-react/data-grid";
+// import columns from "./tableColumnsOne";
 
 const Orders = () => {
   const [users, setUsers] = useState([]);
@@ -56,6 +61,15 @@ const Orders = () => {
           checkboxSelection
           disableRowSelectionOnClick
         />
+        // <DataGrid dataSource={users} showBorders={true} columns={columns}>
+        //   {columns.map((column, index) => (
+        //     <Column key={index} {...column} />
+        //   ))}
+        //   {/* <Column dataField="id" caption="ID" />
+        //   {/* Add more Column components as needed */}
+        //   <Paging defaultPageSize={10} />
+        //   <Pager showPageSizeSelector={true} allowedPageSizes={[5, 10, 20]} />
+        // </DataGrid>
       )}
     </div>
   );
