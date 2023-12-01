@@ -43,24 +43,26 @@ const Orders = () => {
         backgroundColor: "silver",
       }}
     >
-      {isLoading ? (
-        "Loading....."
-      ) : (
-        <DataGrid
-          rows={users}
-          getRowId={(row) => uniqid()}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 10,
-              },
-            },
-          }}
-          pageSizeOptions={[5]}
-          checkboxSelection
-          disableRowSelectionOnClick
-        />
+      {
+        isLoading
+          ? "Loading....."
+          : users && (
+              <DataGrid
+                rows={users}
+                getRowId={(row) => uniqid()}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: 10,
+                    },
+                  },
+                }}
+                pageSizeOptions={[5]}
+                checkboxSelection
+                disableRowSelectionOnClick
+              />
+            )
         // <DataGrid dataSource={users} showBorders={true} columns={columns}>
         //   {columns.map((column, index) => (
         //     <Column key={index} {...column} />
@@ -70,7 +72,7 @@ const Orders = () => {
         //   <Paging defaultPageSize={10} />
         //   <Pager showPageSizeSelector={true} allowedPageSizes={[5, 10, 20]} />
         // </DataGrid>
-      )}
+      }
     </div>
   );
 };
