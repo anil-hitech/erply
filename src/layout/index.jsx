@@ -7,31 +7,7 @@ const Layout = () => {
   const clientDetail =
     JSON?.parse(localStorage?.getItem("clientDetail")) || null;
 
-  //sets localstorage if there is change in session key
-  // if (clientDetail) {
-  //   params?.get("sessionKey") !== clientDetail.sessionKey &&
-  //     localStorage?.setItem(
-  //       "clientDetail",
-  //       JSON.stringify({
-  //         clientCode: params?.get("clientCode"),
-  //         sessionKey: params?.get("sessionKey"),
-  //         // clientCode: "606950",
-  //         // sessionKey: "ad364a169cdfacb7de7ecb3fbe8fee1a7555692433f0",
-  //       })
-  //     );
-  // } else {
-  //   localStorage?.setItem(
-  //     "clientDetail",
-  //     JSON.stringify({
-  //       clientCode: params?.get("clientCode"),
-  //       sessionKey: params?.get("sessionKey"),
-  //       // clientCode: "606950",
-  //       // sessionKey: "ad364a169cdfacb7de7ecb3fbe8fee1a7555692433f0",
-  //     })
-  //   );
-  // }
-
-  params &&
+  params.has("sessionKey") &&
     localStorage?.setItem(
       "clientDetail",
       JSON.stringify({
