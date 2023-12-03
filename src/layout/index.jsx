@@ -4,8 +4,6 @@ import { useSearchParams } from "react-router-dom";
 
 const Layout = () => {
   const [params] = useSearchParams();
-  const clientDetail =
-    JSON?.parse(localStorage?.getItem("clientDetail")) || null;
 
   params.has("sessionKey") &&
     localStorage?.setItem(
@@ -13,11 +11,16 @@ const Layout = () => {
       JSON.stringify({
         clientCode: params?.get("clientCode"),
         sessionKey: params?.get("sessionKey"),
-        // clientCode: "606950",
-        // sessionKey: "ad364a169cdfacb7de7ecb3fbe8fee1a7555692433f0",
       })
     );
 
+  // localStorage?.setItem(
+  //   "clientDetail",
+  //   JSON.stringify({
+  //     clientCode: "606950",
+  //     sessionKey: "038b36e0405fed269d59302f93308b204b0a2a8f77ed",
+  //   })
+  // );
   return (
     <div className="flex flex-row ">
       <AppDrawer />

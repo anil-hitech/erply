@@ -25,9 +25,18 @@ const Dashboard = () => {
 
   //fetching summary_data for dashboard
   const getSummaryData = async () => {
+    const selectedCustomer = customersList.filter(
+      (customer) => customer.fullName === summaryFilter?.customerID
+    );
+
+    // console.log("selectedCustomer", selectedCustomer);
     await api
       .get(
-        `orderReportSummary.php?clientCode=${clientDetail?.clientCode}&sessionKey=${clientDetail?.sessionKey}&locationID=${summaryFilter.locationID}&customerID=${summaryFilter.customerID}`
+        `orderReportSummary.php?clientCode=${
+          clientDetail?.clientCode
+        }&sessionKey=${clientDetail?.sessionKey}&locationID=${
+          summaryFilter.locationID
+        }&customerID=${selectedCustomer[0]?.customerID ?? ""}`
       )
       .then((res) => setReportSummary(res.data));
     setIsLoading(false);
@@ -42,7 +51,7 @@ const Dashboard = () => {
         request: "getCustomers",
         recordsOnPage: 1000,
         getFields: "customerID,firstName,lastName,fullName",
-        searchNameIncrementally: summaryFilter.customerID,
+        searchNameIncrementally: summaryFilter?.customerID,
       })
       .then((res) => setCustomerList(res.data.records));
 
@@ -58,7 +67,7 @@ const Dashboard = () => {
     // getCustomerList();
     if (timer) clearTimeout(timer);
 
-    if (summaryFilter.customerID.length >= 2) {
+    if (summaryFilter?.customerID.length >= 2) {
       const newTimer = setTimeout(() => getCustomerList(), 500);
       setTimeout(newTimer);
       setTimer(newTimer);

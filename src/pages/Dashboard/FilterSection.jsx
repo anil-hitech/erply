@@ -69,11 +69,13 @@ const FilterSection = ({
       <Autocomplete
         disablePortal
         id={uniqid()}
-        // value={filters.customerID}
         options={customers?.map((customer) => customer.fullName) || []}
-        onChange={(_, value) =>
-          setFilters((prev) => ({ ...prev, customerID: value }))
-        }
+        onChange={(_, selectedName) => {
+          setFilters((prev) => ({
+            ...prev,
+            customerID: selectedName,
+          }));
+        }}
         sx={{ width: 300 }}
         renderInput={(params) => (
           <TextField
