@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { DataGrid } from "devextreme-react";
+import { DataGrid, LoadPanel } from "devextreme-react";
 import tableColumns, { summaryRow } from "./tableColumns";
 import "devextreme/dist/css/dx.light.css";
 import {
@@ -49,41 +49,48 @@ const Orders = () => {
   console.log(users);
   return (
     <div>
-      {isLoading
-        ? "Loading....."
-        : users && (
-            <DataGrid
-              // width={"100%"}
-              height={"80vh"}
-              dataSource={users}
-              showBorders={true}
-              columns={columns}
-              allowColumnResizing={true}
-              // columnAutoWidth={true}
-            >
-              {columns.map((column, index) => (
-                <Column key={index} {...column} />
-              ))}
+      {isLoading ? (
+        <LoadPanel
+          shadingColor="rgba(0,0,0,0.4)"
+          visible={isLoading}
+          showIndicator={true}
+          shading={true}
+        />
+      ) : (
+        users && (
+          <DataGrid
+            // width={"100%"}
+            height={"80vh"}
+            dataSource={users}
+            showBorders={true}
+            columns={columns}
+            allowColumnResizing={true}
+            // columnAutoWidth={true}
+          >
+            {columns.map((column, index) => (
+              <Column key={index} {...column} />
+            ))}
 
-              <FilterRow visible={true} />
-              <Summary>
-                {summaryRow.map((col, index) => (
-                  <TotalItem
-                    key={index}
-                    column={col}
-                    summaryType="sum"
-                    displayFormat={(value) => parseInt(value).toLocaleString()} // Optional formatting
-                  />
-                ))}
-              </Summary>
-              <Paging defaultPageSize={20} />
-              <Pager
-                showPageSizeSelector={true}
-                allowedPageSizes={[20, 50, 100]}
-              />
-              <Scrolling rowRenderingMode="virtual" />
-            </DataGrid>
-          )}
+            <FilterRow visible={true} />
+            <Summary>
+              {summaryRow.map((col, index) => (
+                <TotalItem
+                  key={index}
+                  column={col}
+                  summaryType="sum"
+                  displayFormat={(value) => parseInt(value).toLocaleString()} // Optional formatting
+                />
+              ))}
+            </Summary>
+            <Paging defaultPageSize={20} />
+            <Pager
+              showPageSizeSelector={true}
+              allowedPageSizes={[20, 50, 100]}
+            />
+            <Scrolling rowRenderingMode="virtual" />
+          </DataGrid>
+        )
+      )}
     </div>
   );
 };

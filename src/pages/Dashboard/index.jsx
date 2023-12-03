@@ -29,6 +29,7 @@ const Dashboard = () => {
       (customer) => customer.fullName === summaryFilter?.customerID
     );
 
+    setIsLoading(true);
     // console.log("selectedCustomer", selectedCustomer);
     await api
       .get(
@@ -54,8 +55,6 @@ const Dashboard = () => {
         searchNameIncrementally: summaryFilter?.customerID,
       })
       .then((res) => setCustomerList(res.data.records));
-
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -96,7 +95,7 @@ const Dashboard = () => {
         handleFilter={() => getSummaryData()}
         handleReset={() => handleResetFilters}
       />
-      <PreviewSection data={reportSummary} />
+      <PreviewSection data={reportSummary} isLoading={isLoading} />
     </Box>
   );
 };

@@ -1,15 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { PreviewDataField } from "./previewDataField";
 
-const PreviewSection = ({ data }) => {
+const PreviewSection = ({ data, isLoading }) => {
   const navigate = useNavigate();
 
   const previewData = PreviewDataField(data); //getting data from helper function
 
   const itemsKeys = Object.keys(previewData.byItem);
   const orderKeys = Object.keys(previewData.byOrder);
+
+  const LoaderSpinner = () => <CircularProgress size="1rem" />;
 
   return (
     <Box
@@ -49,7 +51,11 @@ const PreviewSection = ({ data }) => {
                   {previewData.byItem[item].label}
                 </Typography>
                 <Typography variant="h5">
-                  {previewData.byItem[item].value || "---"}
+                  {isLoading ? (
+                    <LoaderSpinner />
+                  ) : (
+                    previewData.byItem[item].value || "---"
+                  )}
                 </Typography>
               </Box>
             </Grid>
@@ -83,7 +89,11 @@ const PreviewSection = ({ data }) => {
                   {previewData.byOrder[item].label}
                 </Typography>
                 <Typography variant="h5">
-                  {previewData.byOrder[item].value || "---"}
+                  {isLoading ? (
+                    <LoaderSpinner />
+                  ) : (
+                    previewData.byOrder[item].value || "---"
+                  )}
                 </Typography>
               </Box>
             </Grid>
