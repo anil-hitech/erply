@@ -4,12 +4,20 @@ import uniqid from "uniqid";
 
 import api from "../../api";
 
-import { DataGrid } from "@mui/x-data-grid";
-import columns from "./tableColumns";
+// import { DataGrid } from "@mui/x-data-grid";
+// import columns from "./tableColumns";
 
-// import { DataGrid } from "devextreme-react";
-// import { Column, Pager, Paging } from "devextreme-react/data-grid";
-// import columns from "./tableColumnsOne";
+import { DataGrid } from "devextreme-react";
+import {
+  Column,
+  FilterRow,
+  Pager,
+  Paging,
+  Summary,
+  TotalItem,
+} from "devextreme-react/data-grid";
+import columns, { summaryRow } from "./tableColumnsOne";
+import "devextreme/dist/css/dx.light.css";
 
 const Orders = () => {
   const [users, setUsers] = useState([]);
@@ -43,36 +51,53 @@ const Orders = () => {
         backgroundColor: "silver",
       }}
     >
-      {
-        isLoading
-          ? "Loading....."
-          : users && (
-              <DataGrid
-                rows={users}
-                getRowId={(row) => uniqid()}
-                columns={columns}
-                initialState={{
-                  pagination: {
-                    paginationModel: {
-                      pageSize: 10,
-                    },
-                  },
-                }}
-                pageSizeOptions={[5]}
-                checkboxSelection
-                disableRowSelectionOnClick
+      {isLoading
+        ? "Loading....."
+        : users && (
+            // <DataGrid
+            //   rows={users}
+            //   getRowId={(row) => uniqid()}
+            //   columns={columns}
+            //   initialState={{
+            //     pagination: {
+            //       paginationModel: {
+            //         pageSize: 10,
+            //       },
+            //     },
+            //   }}
+            //   pageSizeOptions={[5]}
+            //   checkboxSelection
+            //   disableRowSelectionOnClick
+            // />
+
+            <DataGrid
+              width={"100%"}
+              dataSource={users}
+              showBorders={true}
+              columns={columns}
+            >
+              {columns.map((column, index) => (
+                <Column key={index} {...column} />
+              ))}
+
+              <FilterRow visible={true} />
+              <Summary>
+                {summaryRow.map((col, index) => (
+                  <TotalItem
+                    key={index}
+                    column={col}
+                    summaryType="sum"
+                    displayFormat={"{0}"} // Optional formatting
+                  />
+                ))}
+              </Summary>
+              <Paging defaultPageSize={10} />
+              <Pager
+                showPageSizeSelector={true}
+                allowedPageSizes={[5, 10, 20]}
               />
-            )
-        // <DataGrid dataSource={users} showBorders={true} columns={columns}>
-        //   {columns.map((column, index) => (
-        //     <Column key={index} {...column} />
-        //   ))}
-        //   {/* <Column dataField="id" caption="ID" />
-        //   {/* Add more Column components as needed */}
-        //   <Paging defaultPageSize={10} />
-        //   <Pager showPageSizeSelector={true} allowedPageSizes={[5, 10, 20]} />
-        // </DataGrid>
-      }
+            </DataGrid>
+          )}
     </div>
   );
 };

@@ -11,7 +11,15 @@ export const routes = [
     element: <Dashboard />,
   },
   {
+    path: "erply/dashboard",
+    element: <Dashboard />,
+  },
+  {
     path: "/orders",
+    element: <Orders />,
+  },
+  {
+    path: "erply/orders",
     element: <Orders />,
   },
   {
