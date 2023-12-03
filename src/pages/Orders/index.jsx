@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import uniqid from "uniqid";
-
-import api from "../../api";
-
-// import { DataGrid } from "@mui/x-data-grid";
-// import columns from "./tableColumns";
-
 import { DataGrid } from "devextreme-react";
+import tableColumns, { summaryRow } from "./tableColumns";
+import "devextreme/dist/css/dx.light.css";
 import {
   Column,
   FilterRow,
   Pager,
   Paging,
+  Scrolling,
   Summary,
   TotalItem,
 } from "devextreme-react/data-grid";
-import columns, { summaryRow } from "./tableColumnsOne";
-import "devextreme/dist/css/dx.light.css";
+
+import api from "../../api";
 
 const Orders = () => {
   const [users, setUsers] = useState([]);
@@ -25,6 +21,12 @@ const Orders = () => {
 
   const [params] = useSearchParams();
   const clientDetail = JSON.parse(localStorage?.getItem("clientDetail"));
+
+  let columns = [];
+  if (params?.get("type1") === "order") {
+    columns = tableColumns.filter((col) => col.dataField !== "itemName"); //removing columns for oder type
+    columns = columns.filter((col) => col.dataField !== "code");
+  } else columns = tableColumns;
 
   const getUsersData = async () => {
     await api
@@ -46,35 +48,18 @@ const Orders = () => {
 
   console.log(users);
   return (
-    <div
-      style={{
-        backgroundColor: "silver",
-      }}
-    >
+    <div>
       {isLoading
         ? "Loading....."
         : users && (
-            // <DataGrid
-            //   rows={users}
-            //   getRowId={(row) => uniqid()}
-            //   columns={columns}
-            //   initialState={{
-            //     pagination: {
-            //       paginationModel: {
-            //         pageSize: 10,
-            //       },
-            //     },
-            //   }}
-            //   pageSizeOptions={[5]}
-            //   checkboxSelection
-            //   disableRowSelectionOnClick
-            // />
-
             <DataGrid
-              width={"100%"}
+              // width={"100%"}
+              height={"80vh"}
               dataSource={users}
               showBorders={true}
               columns={columns}
+              allowColumnResizing={true}
+              // columnAutoWidth={true}
             >
               {columns.map((column, index) => (
                 <Column key={index} {...column} />
@@ -87,15 +72,16 @@ const Orders = () => {
                     key={index}
                     column={col}
                     summaryType="sum"
-                    displayFormat={"{0}"} // Optional formatting
+                    displayFormat={(value) => parseInt(value).toLocaleString()} // Optional formatting
                   />
                 ))}
               </Summary>
-              <Paging defaultPageSize={10} />
+              <Paging defaultPageSize={20} />
               <Pager
                 showPageSizeSelector={true}
-                allowedPageSizes={[5, 10, 20]}
+                allowedPageSizes={[20, 50, 100]}
               />
+              <Scrolling rowRenderingMode="virtual" />
             </DataGrid>
           )}
     </div>

@@ -1,96 +1,103 @@
 const columns = [
   {
-    field: "number",
-    headerName: "Order Number",
-    flex: 1,
-    minWidth: 50,
-    editable: false,
+    dataField: "number",
+    caption: "Order Number",
+    width: "auto", // Adjust column width as needed
+    alignment: "center",
   },
   {
-    field: "itemName",
-    headerName: "Item Name",
-    flex: 1,
-    minWidth: 50,
-    editable: false,
+    dataField: "itemName",
+    caption: "Item Name",
+    width: "auto", // Adjust column width as needed
+    alignment: "center",
   },
   {
-    field: "code",
-    headerName: "SKU",
-    flex: 1,
-    minWidth: 50,
-    editable: false,
+    dataField: "code",
+    caption: "SKU",
+    width: "auto", // Adjust column width as needed
+    alignment: "center",
   },
   {
-    field: "warehouseName",
-    headerName: "Warehouse Name",
-    flex: 1,
-    minWidth: 50,
-    editable: false,
+    dataField: "warehouseName",
+    caption: "Warehouse Name",
+    width: "auto", // Adjust column width as needed
+    alignment: "center",
   },
   {
-    field: "clientName",
-    headerName: "Client Name",
-    flex: 1,
-    minWidth: 50,
-    editable: false,
+    dataField: "clientName",
+    caption: "Client Name",
+    width: "auto", // Adjust column width as needed
+    alignment: "center",
   },
   {
-    field: "date",
-    headerName: "Date",
-    flex: 1,
-    minWidth: 50,
-    editable: false,
+    dataField: "date",
+    caption: "Date",
+    width: "auto", // Adjust column width as needed
+    alignment: "center",
   },
   {
-    field: "open",
-    headerName: "Open",
-    flex: 1,
-    minWidth: 50,
-    editable: false,
+    dataField: "open",
+    caption: "Open",
+    width: "auto", // Adjust column width as needed
+    alignment: "center",
+    customizeText: (data) => parseInt(data.value).toLocaleString(),
   },
   {
-    field: "received",
-    headerName: "Received",
-    flex: 1,
-    minWidth: 50,
-    editable: false,
+    dataField: "received",
+    caption: "Received",
+    width: "auto", // Adjust column width as needed
+    alignment: "center",
+    calculateCellValue: (rowData) => {
+      console.log("rowData", rowData);
+
+      return rowData.received !== null
+        ? parseInt(rowData.received).toLocaleString(undefined, {
+            maximumFractionDigits: 0,
+          })
+        : 0;
+    },
+
+    // dataType: "number",
+    // format: "currency",
+    // customizeText: (data) => data.value.toLocaleString(),
   },
   {
-    field: "onVA",
-    headerName: "V.A.",
-    flex: 1,
-    minWidth: 50,
-    editable: false,
+    dataField: "onVA",
+    caption: "V.A.",
+    width: "auto", // Adjust column width as needed
+    alignment: "center",
+    customizeText: (data) => parseInt(data.value).toLocaleString(),
   },
   {
-    field: "onHold",
-    headerName: "On Hold",
-    flex: 1,
-    minWidth: 50,
-    editable: false,
+    dataField: "onHold",
+    caption: "On Hold",
+    width: "auto", // Adjust column width as needed
+    alignment: "center",
+    customizeText: (data) => parseInt(data.value).toLocaleString(),
   },
   {
-    field: "onEmb",
-    headerName: "embRel",
-    flex: 1,
-    minWidth: 50,
-    editable: false,
+    dataField: "onEmb",
+    caption: "embRel",
+    width: "auto", // Adjust column width as needed
+    alignment: "center",
+    customizeText: (data) => parseInt(data.value).toLocaleString(),
   },
   {
-    field: "invoiced",
-    headerName: "Invoiced",
-    flex: 1,
-    minWidth: 50,
-    editable: false,
+    dataField: "invoiced",
+    caption: "Invoiced",
+    width: "auto", // Adjust column width as needed
+    alignment: "center",
+    customizeText: (data) => parseInt(data.value).toLocaleString(),
   },
   // {
-  //   field: "ordered",
-  //   headerName: "Ordered",
-  //   flex: 1,
-  //   minWidth: 50,
-  //   editable: false,
-  //   hideable: false,
+  //   dataField: "ordered",
+  //   caption: "Ordered",
+  //   //flex: 1,
+  //   width: "auto", // Adjust column width as needed
+  //alignment: 'center',
   // },
 ];
+
+export const summaryRow = ["open", "onVA", "onHold", "onEmb", "invoiced"];
 
 export default columns;

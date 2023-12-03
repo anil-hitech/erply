@@ -26,7 +26,8 @@ const FilterSection = ({
   const [filters, setFilters] = useState(initialFilters);
 
   const handleTextField = useCallback(
-    (e) => setFilters((prev) => ({ ...prev, customerID: e?.target.value })),
+    (e) =>
+      setFilters((prev) => ({ ...prev, customerID: e?.target.value || "" })),
     [filters]
   );
 
@@ -42,38 +43,15 @@ const FilterSection = ({
       gap={"20px"}
       alignSelf={"center"}
     >
-      {/* <FormControl>
-        <InputLabel id="demo-simple-select-label">Customer Filter</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={filters.customerID}
-          label="Customer Filter"
-          onChange={(e) =>
-            setFilters((prev) => ({ ...prev, customerID: e?.target.value }))
-          }
-          // onSelect={(e) =>
-          //   setFilters((prev) => ({ ...prev, customerID: e?.target.value }))
-          // }
-          sx={{ width: "300px" }}
-          >
-          <MenuItem value="">None</MenuItem>
-          {customers?.map((customer, index) => (
-            <MenuItem value={customer.customerID} key={index}>
-            {customer.fullName}
-            </MenuItem>
-            ))}
-            </Select>
-          </FormControl> */}
-
       <Autocomplete
         disablePortal
         id={uniqid()}
         options={customers?.map((customer) => customer.fullName) || []}
+        value={filters?.customerID}
         onChange={(_, selectedName) => {
           setFilters((prev) => ({
             ...prev,
-            customerID: selectedName,
+            customerID: selectedName ?? "",
           }));
         }}
         sx={{ width: 300 }}
