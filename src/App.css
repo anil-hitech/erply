@@ -7,6 +7,6 @@
 a {
   text-decoration: none;
 }
-.dx-widget.dx-pager {
+.dx-widget.dx-datagrid-pager.dx-pager {
   display: block !important;
 }
