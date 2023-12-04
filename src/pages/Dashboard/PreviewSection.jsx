@@ -3,13 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { PreviewDataField } from "./previewDataField";
 
-const PreviewSection = ({ data, isLoading }) => {
+const PreviewSection = ({ data, isLoading, filters, customersList }) => {
   const navigate = useNavigate();
 
   const previewData = PreviewDataField(data); //getting data from helper function
 
   const itemsKeys = Object.keys(previewData.byItem);
   const orderKeys = Object.keys(previewData.byOrder);
+
+  const locationID = filters.locationID;
+  const selectedCustomer = customersList.filter(
+    (customer) => customer.fullName === filters?.customerID
+  );
+  const customerID = selectedCustomer[0]?.customerID ?? "";
+  const from = filters.fromDate;
+  const to = filters.toDate;
 
   const LoaderSpinner = () => <CircularProgress size="1rem" />;
 
@@ -43,7 +51,7 @@ const PreviewSection = ({ data, isLoading }) => {
                 }}
                 onClick={() =>
                   navigate(
-                    `/orders?type1=lineItem&type2=${previewData.byItem[item].name}`
+                    `/orders?type1=lineItem&type2=${previewData.byItem[item].name}&locationID=${locationID}&customerID=${customerID}&from=${from}&to=${to}`
                   )
                 }
               >
@@ -81,7 +89,7 @@ const PreviewSection = ({ data, isLoading }) => {
                 }}
                 onClick={() =>
                   navigate(
-                    `/orders?type1=order&type2=${previewData.byOrder[item].name}`
+                    `/orders?type1=order&type2=${previewData.byOrder[item].name}&locationID=${locationID}&customerID=${customerID}`
                   )
                 }
               >

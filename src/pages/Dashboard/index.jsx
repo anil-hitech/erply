@@ -7,6 +7,8 @@ import api from "../../api";
 const initialFilters = {
   customerID: "",
   locationID: "",
+  fromDate: "",
+  toDate: "",
 };
 
 const Dashboard = () => {
@@ -95,7 +97,12 @@ const Dashboard = () => {
         handleFilter={() => getSummaryData()}
         handleReset={() => handleResetFilters}
       />
-      <PreviewSection data={reportSummary} isLoading={isLoading} />
+      <PreviewSection
+        data={reportSummary}
+        isLoading={isLoading}
+        filters={summaryFilter}
+        customersList={customersList}
+      />
     </Box>
   );
 };

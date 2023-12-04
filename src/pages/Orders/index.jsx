@@ -29,13 +29,18 @@ const Orders = () => {
   } else columns = tableColumns;
 
   const getUsersData = async () => {
+    const clientCode = clientDetail?.clientCode;
+    const sessionKey = clientDetail?.sessionKey;
+    const type1 = params?.get("type1");
+    const type2 = params?.get("type2");
+    const locationID = params?.get("locationID");
+    const customerID = params?.get("customerID");
+    const from = params?.get("from");
+    const to = params?.get("to");
+
     await api
       .get(
-        `orderReportDetail.php?clientCode=${
-          clientDetail?.clientCode
-        }&sessionKey=${clientDetail?.sessionKey}&type=${params?.get(
-          "type1"
-        )}&type2=${params.get("type2")}`
+        `orderReportDetail.php?clientCode=${clientCode}&sessionKey=${sessionKey}&type=${type1}&type2=${type2}&locationID=${locationID}&customerID=${customerID}&from=${from}&to=${to}`
       )
       .then((res) => setUsers(res?.data.data));
 
@@ -66,6 +71,8 @@ const Orders = () => {
             columns={columns}
             allowColumnResizing={true}
             // columnAutoWidth={true}
+            showPageSizeSelector={true}
+            // showIndicator={true}
           >
             {columns.map((column, index) => (
               <Column key={index} {...column} />
@@ -84,7 +91,7 @@ const Orders = () => {
             </Summary>
             <Paging defaultPageSize={20} />
             <Pager
-              showPageSizeSelector={true}
+              // showPageSizeSelector={true}
               allowedPageSizes={[20, 50, 100]}
             />
             <Scrolling rowRenderingMode="virtual" />
