@@ -7,3 +7,6 @@
 a {
   text-decoration: none;
 }
+.dx-widget.dx-pager {
+  display: block !important;
+}

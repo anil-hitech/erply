@@ -12,6 +12,16 @@ import {
 } from "@mui/material";
 import { DateBox } from "devextreme-react";
 
+function formatDate(date) {
+  const year = date.toLocaleString("default", { year: "numeric" });
+  const month = date.toLocaleString("default", {
+    month: "2-digit",
+  });
+  const day = date.toLocaleString("default", { day: "2-digit" });
+
+  return [year, month, day].join("-");
+}
+
 const initialFilters = {
   customerID: "",
   locationID: "",
@@ -27,6 +37,8 @@ const FilterSection = ({
   handleReset = () => {}, //to reset the applied filters
 }) => {
   const [filters, setFilters] = useState(initialFilters);
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
 
   const handleTextField = useCallback(
     (e) =>
@@ -36,98 +48,102 @@ const FilterSection = ({
 
   useEffect(() => {
     getFilters(filters); //send filter data to parent
-    console.log("filters", filters);
+    // console.log("filters", filters);
   }, [filters]);
 
   return (
-    <Box display={"flex"} flexDirection={"column"} gap={"25px"} height={"100%"}>
-      <Box
-        display={"flex"}
-        flexDirection={"row"}
-        alignItems={"center"}
-        gap={"20px"}
-        alignSelf={"center"}
-      >
-        <Autocomplete
-          disablePortal
-          id={uniqid()}
-          options={customers?.map((customer) => customer.fullName) || []}
-          value={filters?.customerID}
-          onChange={(_, selectedName) => {
+    <Box
+      display={"flex"}
+      flexDirection={"row"}
+      alignItems={"center"}
+      gap={"20px"}
+      alignSelf={"center"}
+    >
+      <Autocomplete
+        disablePortal
+        size="small"
+        id={uniqid()}
+        options={customers?.map((customer) => customer.fullName) || []}
+        value={filters?.customerID}
+        onChange={(_, selectedName) => {
+          setFilters((prev) => ({
+            ...prev,
+            customerID: selectedName ?? "",
+          }));
+        }}
+        sx={{ width: 300 }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Customer Filter"
+            onChange={handleTextField}
+          />
+        )}
+      />
+
+      <FormControl>
+        <InputLabel size="small" id="demo-simple-select-label">
+          Location Filter
+        </InputLabel>
+        <Select
+          size="small"
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={filters.locationID}
+          label="Location Filter"
+          onChange={(e) =>
+            setFilters((prev) => ({ ...prev, locationID: e?.target.value }))
+          }
+          sx={{ width: "300px" }}
+        >
+          <MenuItem value="">None</MenuItem>
+          {locations?.map((location, index) => (
+            <MenuItem value={location.id} key={index}>
+              {location.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <Box display={"flex"} alignItems={"center"} gap={"10px"}>
+        <label style={{ width: "50px" }}>From :</label>
+        <DateBox
+          width={"150px"}
+          value={fromDate}
+          onValueChange={(value) => {
             setFilters((prev) => ({
               ...prev,
-              customerID: selectedName ?? "",
+              // fromDate: value?.toISOString().split("T")[0],
+              fromDate: formatDate(value),
             }));
+            setFromDate(value);
           }}
-          sx={{ width: 300 }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Customer Filter"
-              onChange={handleTextField}
-            />
-          )}
+          type="date"
+          displayFormat="dd/MM/yyyy"
         />
-
-        <FormControl>
-          <InputLabel id="demo-simple-select-label">Location Filter</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={filters.locationID}
-            label="Location Filter"
-            onChange={(e) =>
-              setFilters((prev) => ({ ...prev, locationID: e?.target.value }))
-            }
-            sx={{ width: "300px" }}
-          >
-            <MenuItem value="">None</MenuItem>
-            {locations?.map((location, index) => (
-              <MenuItem value={location.id} key={index}>
-                {location.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <Box display={"flex"} alignItems={"center"} gap={"10px"}>
-          <label>From :</label>
-          <DateBox
-            width={"150px"}
-            value={filters.fromDate}
-            onValueChange={(value) =>
-              setFilters((prev) => ({
-                ...prev,
-                fromDate: value?.toISOString().split("T")[0],
-              }))
-            }
-            type="date"
-            displayFormat="dd/MM/yyyy"
-          />
-        </Box>
-
-        <Box display={"flex"} alignItems={"center"} gap={"10px"}>
-          <label>To :</label>
-          <DateBox
-            width={"150px"}
-            height={"100%"}
-            value={filters.toDate}
-            onValueChange={(value) =>
-              setFilters((prev) => ({
-                ...prev,
-                toDate: value?.toISOString().split("T")[0],
-              }))
-            }
-            type="date"
-            displayFormat="dd/MM/yyyy"
-          />
-        </Box>
       </Box>
-      <Box display={"flex"} justifyContent={"center"} gap={"30px"}>
+
+      <Box display={"flex"} alignItems={"center"} gap={"10px"}>
+        <label style={{ width: "30px" }}>To :</label>
+        <DateBox
+          width={"150px"}
+          height={"100%"}
+          value={toDate}
+          onValueChange={(value) => {
+            setFilters((prev) => ({
+              ...prev,
+              toDate: formatDate(value),
+            }));
+            setToDate(value);
+          }}
+          type="date"
+          displayFormat="dd/MM/yyyy"
+        />
+      </Box>
+      <Box display={"flex"} justifyContent={"center"} gap={"10px"}>
         {/* <Box> */}
         <Button
           variant="contained"
-          size="large"
           sx={{ width: "150px" }}
           onClick={handleFilter}
         >
@@ -138,12 +154,13 @@ const FilterSection = ({
         {/* <Box> */}
         <Button
           variant="contained"
-          size="large"
           color="warning"
           sx={{ width: "150px" }}
           onClick={() => {
             handleReset();
             setFilters(initialFilters);
+            setFromDate(null);
+            setToDate(null);
           }}
         >
           Reset

@@ -42,7 +42,7 @@ const Orders = () => {
       .get(
         `orderReportDetail.php?clientCode=${clientCode}&sessionKey=${sessionKey}&type=${type1}&type2=${type2}&locationID=${locationID}&customerID=${customerID}&from=${from}&to=${to}`
       )
-      .then((res) => setUsers(res?.data.data));
+      .then((res) => setUsers(res?.data.data ?? []));
 
     setIsLoading(false);
   };
@@ -51,7 +51,7 @@ const Orders = () => {
     getUsersData();
   }, []);
 
-  console.log(users);
+  // console.log(users);
   return (
     <div>
       {isLoading ? (
@@ -70,9 +70,9 @@ const Orders = () => {
             showBorders={true}
             columns={columns}
             allowColumnResizing={true}
-            // columnAutoWidth={true}
-            showPageSizeSelector={true}
-            // showIndicator={true}
+            showIndicator={true}
+            // showPageSizeSelector={true}
+            paging={{ pageSize: 10, enabled: true }}
           >
             {columns.map((column, index) => (
               <Column key={index} {...column} />
@@ -89,10 +89,11 @@ const Orders = () => {
                 />
               ))}
             </Summary>
-            <Paging defaultPageSize={20} />
+
             <Pager
-              // showPageSizeSelector={true}
-              allowedPageSizes={[20, 50, 100]}
+              allowedPageSizes={[5, 10, 20]} // Define available page sizes
+              showPageSizeSelector={true} // Display the page size selector
+              showInfo={true}
             />
             <Scrolling rowRenderingMode="virtual" />
           </DataGrid>

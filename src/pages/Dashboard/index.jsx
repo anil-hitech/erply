@@ -65,7 +65,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     getSummaryData();
-    console.log(clientDetail);
+    // console.log(clientDetail);
   }, []);
 
   useEffect(() => {
