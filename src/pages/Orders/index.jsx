@@ -64,7 +64,7 @@ const Orders = () => {
       ) : (
         users && (
           <DataGrid
-            // width={"100%"}
+            width={"100%"}
             height={"80vh"}
             dataSource={users}
             showBorders={true}

@@ -89,7 +89,7 @@ const PreviewSection = ({ data, isLoading, filters, customersList }) => {
                 }}
                 onClick={() =>
                   navigate(
-                    `/orders?type1=order&type2=${previewData.byOrder[item].name}&locationID=${locationID}&customerID=${customerID}`
+                    `/orders?type1=order&type2=${previewData.byOrder[item].name}&locationID=${locationID}&customerID=${customerID}&from=${from}&to=${to}`
                   )
                 }
               >

@@ -151,7 +151,7 @@ export default function AppDrawer() {
           ))}
         </List> */}
       </DrawerMui>
-      <Main open={open}>
+      <Main open={open} sx={{ padding: 0, margin: "20px" }}>
         <DrawerHeader />
         <Outlet />
       </Main>

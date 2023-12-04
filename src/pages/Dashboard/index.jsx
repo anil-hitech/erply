@@ -33,13 +33,17 @@ const Dashboard = () => {
 
     setIsLoading(true);
     // console.log("selectedCustomer", selectedCustomer);
+    const from = summaryFilter.fromDate;
+    const to = summaryFilter.toDate;
     await api
       .get(
         `orderReportSummary.php?clientCode=${
           clientDetail?.clientCode
         }&sessionKey=${clientDetail?.sessionKey}&locationID=${
           summaryFilter.locationID
-        }&customerID=${selectedCustomer[0]?.customerID ?? ""}`
+        }&customerID=${
+          selectedCustomer[0]?.customerID ?? ""
+        }&from=${from}&to=${to}`
       )
       .then((res) => setReportSummary(res.data));
     setIsLoading(false);

@@ -40,7 +40,7 @@ const FilterSection = ({
   }, [filters]);
 
   return (
-    <Box display={"flex"} flexDirection={"column"} gap={"25px"}>
+    <Box display={"flex"} flexDirection={"column"} gap={"25px"} height={"100%"}>
       <Box
         display={"flex"}
         flexDirection={"row"}
@@ -89,35 +89,11 @@ const FilterSection = ({
             ))}
           </Select>
         </FormControl>
-        {/* <Box> */}
-        <Button
-          variant="contained"
-          size="large"
-          sx={{ width: "100px" }}
-          onClick={handleFilter}
-        >
-          Filter
-        </Button>
-        {/* </Box> */}
 
-        {/* <Box> */}
-        <Button
-          variant="contained"
-          size="large"
-          sx={{ width: "100px" }}
-          onClick={() => {
-            handleReset();
-            setFilters(initialFilters);
-          }}
-        >
-          Reset
-        </Button>
-        {/* </Box> */}
-      </Box>
-      <Box display={"flex"} justifyContent={"center"} gap={"30px"}>
         <Box display={"flex"} alignItems={"center"} gap={"10px"}>
           <label>From :</label>
           <DateBox
+            width={"150px"}
             value={filters.fromDate}
             onValueChange={(value) =>
               setFilters((prev) => ({
@@ -133,6 +109,8 @@ const FilterSection = ({
         <Box display={"flex"} alignItems={"center"} gap={"10px"}>
           <label>To :</label>
           <DateBox
+            width={"150px"}
+            height={"100%"}
             value={filters.toDate}
             onValueChange={(value) =>
               setFilters((prev) => ({
@@ -144,6 +122,33 @@ const FilterSection = ({
             displayFormat="dd/MM/yyyy"
           />
         </Box>
+      </Box>
+      <Box display={"flex"} justifyContent={"center"} gap={"30px"}>
+        {/* <Box> */}
+        <Button
+          variant="contained"
+          size="large"
+          sx={{ width: "150px" }}
+          onClick={handleFilter}
+        >
+          Filter
+        </Button>
+        {/* </Box> */}
+
+        {/* <Box> */}
+        <Button
+          variant="contained"
+          size="large"
+          color="warning"
+          sx={{ width: "150px" }}
+          onClick={() => {
+            handleReset();
+            setFilters(initialFilters);
+          }}
+        >
+          Reset
+        </Button>
+        {/* </Box> */}
       </Box>
     </Box>
   );
