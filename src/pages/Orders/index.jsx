@@ -17,6 +17,7 @@ import api from "../../api";
 
 const Orders = () => {
   const [users, setUsers] = useState([]);
+  const [pageSize, setPageSize] = useState(20);
   const [isLoading, setIsLoading] = useState(true);
 
   const [params] = useSearchParams();
@@ -27,6 +28,10 @@ const Orders = () => {
     columns = tableColumns.filter((col) => col.dataField !== "itemName"); //removing columns for oder type
     columns = columns.filter((col) => col.dataField !== "code");
   } else columns = tableColumns;
+
+  const handlePageSizeChange = (newPageSize) => {
+    setPageSize(newPageSize);
+  };
 
   const getUsersData = async () => {
     const clientCode = clientDetail?.clientCode;
@@ -70,7 +75,7 @@ const Orders = () => {
             showBorders={true}
             columns={columns}
             allowColumnResizing={true}
-            paging={{ pageSize: 20 }}
+            paging={{ pageSize: pageSize }}
           >
             {columns.map((column, index) => (
               <Column key={index} {...column} />
@@ -91,7 +96,9 @@ const Orders = () => {
             <Pager
               allowedPageSizes={[20, 50, 100]} // Define available page sizes
               showPageSizeSelector={true} // Display the page size selector
-              // showInfo={true}
+              totalCount={users?.length} // Total count of records
+              onPageSizeChange={handlePageSizeChange}
+              showInfo={true}
               // enabled={true}
             />
             <Scrolling rowRenderingMode="virtual" />
