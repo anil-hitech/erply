@@ -75,7 +75,6 @@ const Orders = () => {
             showBorders={true}
             columns={columns}
             allowColumnResizing={true}
-            paging={{ pageSize: pageSize }}
           >
             {columns.map((column, index) => (
               <Column key={index} {...column} />
@@ -92,7 +91,7 @@ const Orders = () => {
                 />
               ))}
             </Summary>
-
+            <Paging pageSize={pageSize} />
             <Pager
               allowedPageSizes={[20, 50, 100]} // Define available page sizes
               showPageSizeSelector={true} // Display the page size selector
