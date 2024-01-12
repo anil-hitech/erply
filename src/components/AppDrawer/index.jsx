@@ -115,7 +115,7 @@ export default function AppDrawer() {
       >
         <DrawerHeader>
           <Typography variant="h4" flexGrow={1} ml={"10px"}>
-            ERPLAY
+            ERPLY
           </Typography>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? (
