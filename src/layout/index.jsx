@@ -1,4 +1,3 @@
-import React from "react";
 import AppDrawer from "../components/AppDrawer";
 import { useSearchParams } from "react-router-dom";
 
@@ -18,7 +17,7 @@ const Layout = () => {
   //   "clientDetail",
   //   JSON.stringify({
   //     clientCode: "606950",
-  //     sessionKey: "4f3a7e952d40428fef74d764008c25c7d1f3623ec046",
+  //     sessionKey: "ceb0a6133298b8788184665788f00899f67e345d48c4",
   //   })
   // );
   return (

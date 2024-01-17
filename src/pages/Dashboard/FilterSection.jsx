@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
+import { useCallback, useEffect, useState } from "react";
 import uniqid from "uniqid";
 import {
   Autocomplete,
@@ -48,7 +50,7 @@ const FilterSection = ({
 
   useEffect(() => {
     getFilters(filters); //send filter data to parent
-    // console.log("filters", filters);
+    console.log("filters", filters);
   }, [filters]);
 
   return (
@@ -109,12 +111,13 @@ const FilterSection = ({
         <label style={{ width: "50px" }}>From :</label>
         <DateBox
           width={"150px"}
+          placeholder="dd/mm/yyyy"
           value={fromDate}
           onValueChange={(value) => {
             setFilters((prev) => ({
               ...prev,
               // fromDate: value?.toISOString().split("T")[0],
-              fromDate: formatDate(value),
+              fromDate: value !== null ? formatDate(value) : "",
             }));
             setFromDate(value);
           }}
@@ -124,15 +127,16 @@ const FilterSection = ({
       </Box>
 
       <Box display={"flex"} alignItems={"center"} gap={"10px"}>
+        setToDate
         <label style={{ width: "30px" }}>To :</label>
         <DateBox
           width={"150px"}
-          height={"100%"}
+          placeholder="dd/mm/yyyy"
           value={toDate}
           onValueChange={(value) => {
             setFilters((prev) => ({
               ...prev,
-              toDate: formatDate(value),
+              toDate: value !== null ? formatDate(value) : "",
             }));
             setToDate(value);
           }}

@@ -1,4 +1,6 @@
 import * as React from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import DrawerMui from "@mui/material/Drawer";
@@ -10,17 +12,19 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
-import { Outlet, useNavigate } from "react-router-dom";
+
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+// import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+// import MailIcon from "@mui/icons-material/Mail";
+
 import appBarItems from "./appBarItems";
 import AppBreadCrumbs from "./AppBreadCrumbs";
+import erplyLogo from "../../assets/erply.png";
 
 const drawerWidth = 240;
 
@@ -102,7 +106,8 @@ export default function AppDrawer() {
       </AppBar>
       <DrawerMui
         sx={{
-          width: drawerWidth,
+          width: open ? drawerWidth : 0,
+          transition: "width 0.3s",
           flexShrink: 0,
           "& .MuiDrawer-paper": {
             width: drawerWidth,
@@ -115,7 +120,8 @@ export default function AppDrawer() {
       >
         <DrawerHeader>
           <Typography variant="h4" flexGrow={1} ml={"10px"}>
-            ERPLY
+            <img src={erplyLogo} alt="E" />
+            RPLY
           </Typography>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "ltr" ? (

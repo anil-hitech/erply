@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { DataGrid, LoadPanel } from "devextreme-react";
 import tableColumns, { summaryRow } from "./tableColumns";
@@ -14,6 +14,7 @@ import {
 } from "devextreme-react/data-grid";
 
 import api from "../../api";
+import { Typography } from "@mui/material";
 
 const Orders = () => {
   const [users, setUsers] = useState([]);
@@ -23,11 +24,34 @@ const Orders = () => {
   const [params] = useSearchParams();
   const clientDetail = JSON.parse(localStorage?.getItem("clientDetail"));
 
+  const type1 = params?.get("type1");
+  const type2 = params?.get("type2");
+
+  const clientCode = clientDetail.clientCode;
+  const authKey = clientDetail.sessionKey;
+
   let columns = [];
-  if (params?.get("type1") === "order") {
-    columns = tableColumns.filter((col) => col.dataField !== "itemName"); //removing columns for oder type
-    columns = columns.filter((col) => col.dataField !== "code");
-  } else columns = tableColumns;
+  if (type1 === "lineItem") {
+    const excludedColumns = ["orderedQty"];
+    columns = tableColumns.filter(
+      (col) => !excludedColumns.includes(col.dataField) //removing unnecessary columns for lineItem type
+    );
+  } else {
+    const excludedColumns = ["itemName", "code", "totalQty"];
+    columns = tableColumns.filter(
+      (col) => !excludedColumns.includes(col.dataField) //removing unnecessary columns for oder type
+    );
+  }
+
+  const handleCellClick = (e) => {
+    if (e.column.name === "number")
+      window.open(
+        `https://au.erply.com/${clientCode}/?lang=eng&authKey=${authKey}&section=invoice&edit=367/`,
+        "_blank"
+      );
+
+    console.log(e.column.data);
+  };
 
   const handlePageSizeChange = (newPageSize) => {
     setPageSize(newPageSize);
@@ -36,8 +60,6 @@ const Orders = () => {
   const getUsersData = async () => {
     const clientCode = clientDetail?.clientCode;
     const sessionKey = clientDetail?.sessionKey;
-    const type1 = params?.get("type1");
-    const type2 = params?.get("type2");
     const locationID = params?.get("locationID");
     const customerID = params?.get("customerID");
     const from = params?.get("from");
@@ -68,40 +90,53 @@ const Orders = () => {
         />
       ) : (
         users && (
-          <DataGrid
-            width={"100%"}
-            height={"80vh"}
-            dataSource={users}
-            showBorders={true}
-            columns={columns}
-            allowColumnResizing={true}
-          >
-            {columns.map((column, index) => (
-              <Column key={index} {...column} />
-            ))}
-
-            <FilterRow visible={true} />
-            <Summary>
-              {summaryRow.map((col, index) => (
-                <TotalItem
-                  key={index}
-                  column={col}
-                  summaryType="sum"
-                  displayFormat={(value) => parseInt(value).toLocaleString()} // Optional formatting
-                />
+          <>
+            <DataGrid
+              width={"100%"}
+              height={"80vh"}
+              dataSource={users}
+              showBorders={true}
+              columns={columns}
+              allowColumnResizing={true}
+              onCellClick={handleCellClick}
+            >
+              {columns.map((column, index) => (
+                <Column key={index} {...column} />
               ))}
-            </Summary>
-            <Paging pageSize={pageSize} />
-            <Pager
-              allowedPageSizes={[20, 50, 100]} // Define available page sizes
-              showPageSizeSelector={true} // Display the page size selector
-              totalCount={users?.length} // Total count of records
-              onPageSizeChange={handlePageSizeChange}
-              showInfo={true}
-              // enabled={true}
-            />
-            <Scrolling rowRenderingMode="virtual" />
-          </DataGrid>
+
+              <FilterRow visible={true} />
+              <Summary>
+                {summaryRow.map((col, index) => (
+                  <TotalItem
+                    key={index}
+                    column={col}
+                    summaryType="sum"
+                    displayFormat={(value) => parseInt(value).toLocaleString()} // Optional formatting
+                  />
+                ))}
+              </Summary>
+              <Paging pageSize={pageSize} />
+              <Pager
+                allowedPageSizes={[20, 50, 100]} // Define available page sizes
+                showPageSizeSelector={true} // Display the page size selector
+                totalCount={users?.length} // Total count of records
+                onPageSizeChange={handlePageSizeChange}
+                showInfo={true}
+                // enabled={true}
+              />
+              <Scrolling rowRenderingMode="virtual" />
+            </DataGrid>
+            <Typography
+              mt={"3px"}
+              textAlign={"right"}
+              fontSize={"0.9em"}
+              fontWeight={"bold"}
+            >
+              [ Report Detail by :{" "}
+              {type1[0].toUpperCase() + type1.slice(1, type1.length)} - {type2}{" "}
+              ]
+            </Typography>
+          </>
         )
       )}
     </div>
