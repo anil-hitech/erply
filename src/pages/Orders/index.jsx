@@ -14,7 +14,7 @@ import {
 } from "devextreme-react/data-grid";
 
 import api from "../../api";
-import { Typography } from "@mui/material";
+import { priceFormatter } from "./helpers";
 
 const Orders = () => {
   const [users, setUsers] = useState([]);
@@ -46,11 +46,9 @@ const Orders = () => {
   const handleCellClick = (e) => {
     if (e.column.name === "number")
       window.open(
-        `https://au.erply.com/${clientCode}/?lang=eng&authKey=${authKey}&section=invoice&edit=367/`,
+        `https://au.erply.com/${clientCode}/?lang=eng&authKey=${authKey}&section=invoice&edit=${e.data.saleID}`,
         "_blank"
       );
-
-    console.log(e.column.data);
   };
 
   const handlePageSizeChange = (newPageSize) => {
@@ -98,6 +96,7 @@ const Orders = () => {
               showBorders={true}
               columns={columns}
               allowColumnResizing={true}
+              rowAlternationEnabled={true}
               onCellClick={handleCellClick}
             >
               {columns.map((column, index) => (
@@ -111,7 +110,11 @@ const Orders = () => {
                     key={index}
                     column={col}
                     summaryType="sum"
-                    displayFormat={(value) => parseInt(value).toLocaleString()} // Optional formatting
+                    displayFormat={(value) =>
+                      col !== "netTotal"
+                        ? parseInt(value).toLocaleString()
+                        : priceFormatter(value)
+                    } // Optional formatting
                   />
                 ))}
               </Summary>
@@ -126,16 +129,6 @@ const Orders = () => {
               />
               <Scrolling rowRenderingMode="virtual" />
             </DataGrid>
-            <Typography
-              mt={"3px"}
-              textAlign={"right"}
-              fontSize={"0.9em"}
-              fontWeight={"bold"}
-            >
-              [ Report Detail by :{" "}
-              {type1[0].toUpperCase() + type1.slice(1, type1.length)} - {type2}{" "}
-              ]
-            </Typography>
           </>
         )
       )}

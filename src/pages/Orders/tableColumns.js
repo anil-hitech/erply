@@ -1,3 +1,5 @@
+import { priceFormatter } from "./helpers";
+
 const numColWidth = "10%";
 const nameColWidth = "20%";
 
@@ -7,7 +9,9 @@ const columns = [
     caption: "Odr. No.",
     width: numColWidth, // Adjust column width as needed
     alignment: "center",
-    // onCellClick: () => console.log("clicked cell"),
+    // cellTemplate: (cellElement) => {
+    //   cellElement.style.cursor = "pointer";
+    // },
   },
   {
     dataField: "itemName",
@@ -44,7 +48,7 @@ const columns = [
     caption: "Net Total",
     width: numColWidth,
     alignment: "center",
-    customizeText: (data) => Number(data.value).toFixed(2),
+    customizeText: ({ value }) => priceFormatter(value),
   },
   {
     dataField: "ordered",
@@ -71,10 +75,6 @@ const columns = [
           })
         : 0;
     },
-
-    // dataType: "number",
-    // format: "currency",
-    // customizeText: (data) => data.value.toLocaleString(),
   },
   {
     dataField: "onVA",
@@ -105,15 +105,25 @@ const columns = [
     alignment: "center",
     customizeText: (data) => parseInt(data.value).toLocaleString(),
   },
-  // {
-  //   dataField: "ordered",
-  //   caption: "Ordered",
-  //   //flex: 1,
-  //   width: numColWidth,
-  //   alignment: "center",
-  // },
 ];
 
-export const summaryRow = ["open", "onVA", "onHold", "onEmb", "invoiced"];
+export const summaryRow = [
+  "netTotal",
+  "ordered",
+  "open",
+  "onVA",
+  "onHold",
+  "onEmb",
+  "invoiced",
+];
 
 export default columns;
+
+//some fields to rem:
+//flex:1
+// dataType: "number",
+// format: {
+//   type: "currency",
+//   precision: 2,
+// },
+// customizeText: (data) => data.value.toLocaleString(),
