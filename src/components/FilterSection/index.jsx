@@ -77,8 +77,8 @@ const FilterSection = () => {
   }, [customerSearchText]);
 
   useEffect(() => {
-    console.log("localFilter", localFilters);
-    console.log("globalFilter", filters);
+    // console.log("localFilter", localFilters);
+    // console.log("globalFilter", filters);
   }, [localFilters, filters]);
   // useEffect(() => console.log(customerSearchText), [customerSearchText]);
   // useEffect(() => console.log(customersList), [customersList]);

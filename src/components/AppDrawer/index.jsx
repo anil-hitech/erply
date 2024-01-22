@@ -81,7 +81,7 @@ export default function AppDrawer() {
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
   const location = useLocation();
-  console.log(location);
+  // console.log(location);
 
   const handleDrawerOpen = () => {
     setOpen(true);
