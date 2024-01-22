@@ -15,6 +15,7 @@ import {
 
 import api from "../../api";
 import { priceFormatter } from "./helpers";
+import { useFilterContext } from "../../context/FilterContext";
 
 const Orders = () => {
   const [users, setUsers] = useState([]);
@@ -23,6 +24,7 @@ const Orders = () => {
 
   const [params] = useSearchParams();
   const clientDetail = JSON.parse(localStorage?.getItem("clientDetail"));
+  const { filters } = useFilterContext();
 
   const type1 = params?.get("type1");
   const type2 = params?.get("type2");
@@ -58,11 +60,12 @@ const Orders = () => {
   const getUsersData = async () => {
     const clientCode = clientDetail?.clientCode;
     const sessionKey = clientDetail?.sessionKey;
-    const locationID = params?.get("locationID");
-    const customerID = params?.get("customerID");
-    const from = params?.get("from");
-    const to = params?.get("to");
+    const locationID = filters.locationID;
+    const customerID = filters.customerID;
+    const from = filters.fromDate;
+    const to = filters.fromDate;
 
+    setIsLoading(true);
     await api
       .get(
         `orderReportDetail.php?clientCode=${clientCode}&sessionKey=${sessionKey}&type=${type1}&type2=${type2}&locationID=${locationID}&customerID=${customerID}&from=${from}&to=${to}`
@@ -74,7 +77,7 @@ const Orders = () => {
 
   useEffect(() => {
     getUsersData();
-  }, []);
+  }, [type1, type2, filters]);
 
   // console.log(users);
   return (

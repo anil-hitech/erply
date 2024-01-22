@@ -4,13 +4,12 @@ import { useSearchParams } from "react-router-dom";
 const Layout = () => {
   const [params] = useSearchParams();
 
-  console.log(window.location.hostname);
   if (window.location.hostname == "localhost") {
     localStorage?.setItem(
       "clientDetail",
       JSON.stringify({
         clientCode: "606950",
-        sessionKey: "4cfd8bd906848e0a52dc3f3eb9cd5c8c7a10ec57d28f",
+        sessionKey: "4723679fdb850534b03f409a5cdab4daebbeb7630bff",
       })
     );
   } else {

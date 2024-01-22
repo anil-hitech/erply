@@ -16,7 +16,7 @@ const theme = createTheme({
   },
   // Other theme customizations
 
-  mode: "dark",
+  mode: "light",
 });
 
 export default theme;

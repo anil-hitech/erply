@@ -7,3 +7,7 @@ export const priceFormatter = (value) =>
         currency: "USD",
       })
     : ` $${value}`;
+
+export const handleNullValue = (value) => {
+  return value !== null ? Number(value) : 0;
+};

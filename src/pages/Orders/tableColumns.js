@@ -1,4 +1,4 @@
-import { priceFormatter } from "./helpers";
+import { handleNullValue, priceFormatter } from "./helpers";
 
 const numColWidth = "10%";
 const nameColWidth = "20%";
@@ -68,13 +68,8 @@ const columns = [
     caption: "Received",
     width: numColWidth,
     alignment: "center",
-    calculateCellValue: (rowData) => {
-      return rowData.received !== null
-        ? parseInt(rowData.received).toLocaleString(undefined, {
-            maximumFractionDigits: 0,
-          })
-        : 0;
-    },
+    calculateCellValue: (rowData) => handleNullValue(rowData.received),
+    customizeText: (data) => parseInt(data.value).toLocaleString(),
   },
   {
     dataField: "onVA",
@@ -115,6 +110,7 @@ export const summaryRow = [
   "onHold",
   "onEmb",
   "invoiced",
+  "received",
 ];
 
 export default columns;

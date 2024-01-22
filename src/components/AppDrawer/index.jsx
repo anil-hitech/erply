@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -19,12 +19,15 @@ import ListItemText from "@mui/material/ListItemText";
 
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { ExpandMore } from "@mui/icons-material";
 // import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 // import MailIcon from "@mui/icons-material/Mail";
 
 import appBarItems from "./appBarItems";
-import AppBreadCrumbs from "./AppBreadCrumbs";
 import erplyLogo from "../../assets/erply.png";
+import FilterSection from "../FilterSection";
+import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+// import AppBreadCrumbs from "./AppBreadCrumbs";
 
 const drawerWidth = 240;
 
@@ -77,6 +80,8 @@ export default function AppDrawer() {
   const theme = useTheme();
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
+  const location = useLocation();
+  console.log(location);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -89,19 +94,26 @@ export default function AppDrawer() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar
+        position="fixed"
+        open={open}
+        sx={{ backgroundColor: "ghostWhite" }}
+      >
         <Toolbar>
           <IconButton
-            color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={{ mr: 2, ...(open && { display: "none" }) }}
+            sx={{
+              zIndex: 20,
+              color: "black",
+              ...(open && { display: "none" }),
+            }}
           >
             <MenuIcon />
           </IconButton>
-          {/* <Typography variant="h6" noWrap component="div"></Typography> */}
-          <AppBreadCrumbs />
+          {/* <AppBreadCrumbs /> */}
+          <FilterSection />
         </Toolbar>
       </AppBar>
       <DrawerMui
@@ -132,13 +144,81 @@ export default function AppDrawer() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
+        <List sx={{ p: "0px" }}>
           {appBarItems.map((item, index) => (
             <ListItem key={index} disablePadding>
-              <ListItemButton onClick={() => navigate(item.path)}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.name} />
-              </ListItemButton>
+              <Accordion sx={{ width: "100%" }} expanded={item.expandable}>
+                <ListItemButton
+                  onClick={() =>
+                    item.expandable === false && navigate(item.path)
+                  }
+                  sx={{ p: "5px", borderRadius: "5px", height: "45px" }}
+                  selected={item.path === location.pathname}
+                >
+                  <AccordionSummary
+                    expandIcon={item.expandable !== false && <ExpandMore />}
+                    aria-controls="panel1-content"
+                    id="panel1-header"
+                    sx={{
+                      px: "3px",
+                      marginTop: "0",
+                      marginBottom: "0",
+                      width: "100%",
+                    }}
+                  >
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.name} />
+                  </AccordionSummary>
+                </ListItemButton>
+                <AccordionDetails sx={{ p: "2px" }}>
+                  <Box
+                    sx={{
+                      pl: "25px",
+                      fontSize: "1em",
+                      backgroundColor: "ghostWhite",
+                      border: "1px solid transparent",
+                      borderRadius: "2px",
+                    }}
+                  >
+                    {item.childrens &&
+                      item.childrens.map((child, index) => (
+                        <Box key={index}>
+                          <Typography fontWeight={"bold"} fontSize="1em">
+                            {child.label}
+                          </Typography>
+                          <ul
+                            style={{
+                              cursor: "pointer",
+                              listStyle: "square",
+                              marginBottom: "10px",
+                              color: "black",
+                            }}
+                          >
+                            {child?.list.map((subItem, i) => (
+                              <ListItemButton
+                                key={i}
+                                onClick={() => navigate(subItem.link)}
+                                sx={{
+                                  textDecoration: "none",
+                                  listStyleType: "none",
+                                  py: "2px",
+                                  color: "DarkSlateGray",
+                                  borderRadius: "4px",
+                                }}
+                                selected={
+                                  subItem.link ===
+                                  location.pathname + location.search
+                                }
+                              >
+                                <li>{subItem.label}</li>
+                              </ListItemButton>
+                            ))}
+                          </ul>
+                        </Box>
+                      ))}
+                  </Box>
+                </AccordionDetails>
+              </Accordion>
             </ListItem>
           ))}
         </List>
