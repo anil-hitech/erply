@@ -93,6 +93,7 @@ const FilterSection = () => {
       justifyContent={"center"}
       gap={"20px"}
       alignSelf={"center"}
+      // flexWrap={"wrap"}
     >
       <Autocomplete
         disablePortal

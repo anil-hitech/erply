@@ -16,6 +16,15 @@ import {
 import api from "../../api";
 import { priceFormatter } from "./helpers";
 import { useFilterContext } from "../../context/FilterContext";
+// import { makeStyles } from "@mui/material";
+
+// const useStyles = makeStyles(() => ({
+//   showPointer: {
+//     "&:hover": {
+//       cursor: "pointer",
+//     },
+//   },
+// }));
 
 const Orders = () => {
   const [users, setUsers] = useState([]);
@@ -31,6 +40,8 @@ const Orders = () => {
 
   const clientCode = clientDetail.clientCode;
   const authKey = clientDetail.sessionKey;
+
+  // const classes = useStyles();
 
   let columns = [];
   if (type1 === "lineItem") {
@@ -63,7 +74,7 @@ const Orders = () => {
     const locationID = filters.locationID;
     const customerID = filters.customerID;
     const from = filters.fromDate;
-    const to = filters.fromDate;
+    const to = filters.toDate;
 
     setIsLoading(true);
     await api

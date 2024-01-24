@@ -9,9 +9,11 @@ const columns = [
     caption: "Odr. No.",
     width: numColWidth, // Adjust column width as needed
     alignment: "center",
-    // cellTemplate: (cellElement) => {
+    // cellTemplate: (cellElement, cellInfo) => {
     //   cellElement.style.cursor = "pointer";
+    //   return { ...cellElement, cellInfo };
     // },
+    cssClass: "showPointer",
   },
   {
     dataField: "itemName",

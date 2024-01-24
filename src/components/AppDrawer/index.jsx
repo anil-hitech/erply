@@ -94,12 +94,8 @@ export default function AppDrawer() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        open={open}
-        sx={{ backgroundColor: "ghostWhite" }}
-      >
-        <Toolbar>
+      <AppBar position="fixed" open={open} sx={{ backgroundColor: "white" }}>
+        <Toolbar sx={{ height: "auto" }}>
           <IconButton
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -153,7 +149,11 @@ export default function AppDrawer() {
                     item.expandable === false && navigate(item.path)
                   }
                   sx={{ p: "5px", borderRadius: "5px", height: "45px" }}
-                  selected={item.path === location.pathname}
+                  selected={
+                    item.path === location.pathname ||
+                    (item.name === "Dashboard" &&
+                      location.pathname === "/erply/") //to select dashboard when route is "/erply/"
+                  }
                 >
                   <AccordionSummary
                     expandIcon={item.expandable !== false && <ExpandMore />}
@@ -173,7 +173,7 @@ export default function AppDrawer() {
                 <AccordionDetails sx={{ p: "2px" }}>
                   <Box
                     sx={{
-                      pl: "25px",
+                      pl: "30px",
                       fontSize: "1em",
                       backgroundColor: "ghostWhite",
                       border: "1px solid transparent",
@@ -183,7 +183,7 @@ export default function AppDrawer() {
                     {item.childrens &&
                       item.childrens.map((child, index) => (
                         <Box key={index}>
-                          <Typography fontWeight={"bold"} fontSize="1em">
+                          <Typography fontWeight={"bold"} fontSize="0.95em">
                             {child.label}
                           </Typography>
                           <ul
@@ -203,7 +203,9 @@ export default function AppDrawer() {
                                   listStyleType: "none",
                                   py: "2px",
                                   color: "DarkSlateGray",
-                                  borderRadius: "4px",
+                                  borderRadius: "3px",
+                                  fontSize: "0.95em",
+                                  marginRight: "5px",
                                 }}
                                 selected={
                                   subItem.link ===

@@ -1,5 +1,6 @@
 import AppDrawer from "../components/AppDrawer";
 import { useSearchParams } from "react-router-dom";
+import FilterContextProvider from "../context/FilterContext";
 
 const Layout = () => {
   const [params] = useSearchParams();
@@ -9,7 +10,7 @@ const Layout = () => {
       "clientDetail",
       JSON.stringify({
         clientCode: "606950",
-        sessionKey: "f30df50c570de61c165696825f8843b77cbd17558557",
+        sessionKey: "eccc3c97b9f20fd6c8b5d8382ca869d5d957949cbaed",
       })
     );
   } else {
@@ -25,7 +26,9 @@ const Layout = () => {
 
   return (
     <div className="flex flex-row ">
-      <AppDrawer />
+      <FilterContextProvider>
+        <AppDrawer />
+      </FilterContextProvider>
     </div>
   );
 };
