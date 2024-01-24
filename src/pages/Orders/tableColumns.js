@@ -9,10 +9,6 @@ const columns = [
     caption: "Odr. No.",
     width: numColWidth, // Adjust column width as needed
     alignment: "center",
-    // cellTemplate: (cellElement, cellInfo) => {
-    //   cellElement.style.cursor = "pointer";
-    //   return { ...cellElement, cellInfo };
-    // },
     cssClass: "showPointer",
   },
   {
@@ -118,10 +114,14 @@ export const summaryRow = [
 export default columns;
 
 //some fields to rem:
-//flex:1
+// customizeText: (data) => data.value.toLocaleString(),
+// flex:1,
 // dataType: "number",
 // format: {
 //   type: "currency",
 //   precision: 2,
 // },
-// customizeText: (data) => data.value.toLocaleString(),
+// cellTemplate: (cellElement, cellInfo) => {
+//   cellElement.style.cursor = "pointer";
+//   return { ...cellElement, cellInfo };
+// },

@@ -94,7 +94,11 @@ export default function AppDrawer() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} sx={{ backgroundColor: "white" }}>
+      <AppBar
+        position="fixed"
+        open={open}
+        sx={{ backgroundColor: "white", height: "auto" }}
+      >
         <Toolbar sx={{ height: "auto" }}>
           <IconButton
             aria-label="open drawer"
@@ -241,6 +245,7 @@ export default function AppDrawer() {
       </DrawerMui>
       <Main open={open} sx={{ padding: 0, margin: "20px" }}>
         <DrawerHeader />
+        {/* <FilterSection /> */}
         <Outlet />
       </Main>
     </Box>

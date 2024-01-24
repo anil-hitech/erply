@@ -8,6 +8,11 @@ a {
   text-decoration: none;
 }
 
+/* top show pointer cursor in order detail table */
+.showPointer {
+  cursor: pointer;
+}
+
 /* .dx-widget.dx-datagrid-pager.dx-pager {
   display: block !important;
 } */

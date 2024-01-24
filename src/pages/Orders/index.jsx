@@ -16,19 +16,13 @@ import {
 import api from "../../api";
 import { priceFormatter } from "./helpers";
 import { useFilterContext } from "../../context/FilterContext";
-// import { makeStyles } from "@mui/material";
-
-// const useStyles = makeStyles(() => ({
-//   showPointer: {
-//     "&:hover": {
-//       cursor: "pointer",
-//     },
-//   },
-// }));
 
 const Orders = () => {
   const [users, setUsers] = useState([]);
-  const [pageSize, setPageSize] = useState(20);
+  const [pagination, setPagination] = useState(null);
+  const [perPageSize, setPerPageSize] = useState(20);
+  const [currentPageNo, setCurrentPageNo] = useState(2);
+
   const [isLoading, setIsLoading] = useState(true);
 
   const [params] = useSearchParams();
@@ -64,9 +58,9 @@ const Orders = () => {
       );
   };
 
-  const handlePageSizeChange = (newPageSize) => {
-    setPageSize(newPageSize);
-  };
+  const handlePageSizeChange = (newPageSize) => setPerPageSize(newPageSize);
+
+  const handleCurrentIndexChange = (newIndex) => setCurrentPageNo(newIndex);
 
   const getUsersData = async () => {
     const clientCode = clientDetail?.clientCode;
@@ -79,16 +73,19 @@ const Orders = () => {
     setIsLoading(true);
     await api
       .get(
-        `orderReportDetail.php?clientCode=${clientCode}&sessionKey=${sessionKey}&type=${type1}&type2=${type2}&locationID=${locationID}&customerID=${customerID}&from=${from}&to=${to}`
+        `orderReportDetail.php?clientCode=${clientCode}&sessionKey=${sessionKey}&type=${type1}&type2=${type2}&locationID=${locationID}&customerID=${customerID}&from=${from}&to=${to}&perPage=${perPageSize}&pageNo=${currentPageNo}`
       )
-      .then((res) => setUsers(res?.data.data ?? []));
+      .then((res) => {
+        setUsers(res?.data.data ?? []);
+        setPagination(res?.data.paginateData);
+      });
 
     setIsLoading(false);
   };
 
   useEffect(() => {
     getUsersData();
-  }, [type1, type2, filters]);
+  }, [type1, type2, filters, perPageSize]);
 
   // console.log(users);
   return (
@@ -116,7 +113,6 @@ const Orders = () => {
               {columns.map((column, index) => (
                 <Column key={index} {...column} />
               ))}
-
               <FilterRow visible={true} />
               <Summary>
                 {summaryRow.map((col, index) => (
@@ -132,14 +128,20 @@ const Orders = () => {
                   />
                 ))}
               </Summary>
-              <Paging pageSize={pageSize} />
-              <Pager
-                allowedPageSizes={[20, 50, 100]} // Define available page sizes
-                showPageSizeSelector={true} // Display the page size selector
-                totalCount={users?.length} // Total count of records
+              <Paging
+                pageSize={perPageSize}
                 onPageSizeChange={handlePageSizeChange}
+                onPageIndexChange={handleCurrentIndexChange}
+                defaultPageIndex={2}
+                // pageIndex={2}
+              />
+              <Pager
+                visible={true}
+                allowedPageSizes={[2, 5, 100]} // Define available page sizes
+                showPageSizeSelector={true} // Display the page size selector
                 showInfo={true}
-                // enabled={true}
+                infoText={`Page ${pagination.from} to ${pagination.to} (${pagination.total} items)`}
+                // showNavigationButtons={true}
               />
               <Scrolling rowRenderingMode="virtual" />
             </DataGrid>
