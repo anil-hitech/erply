@@ -10,7 +10,7 @@ const Layout = () => {
       "clientDetail",
       JSON.stringify({
         clientCode: "606950",
-        sessionKey: "ec6606f9322866afecf91d708839c3782dc8fb9453b8",
+        sessionKey: "11d0b38044bc28c518e5b55117c8fbce05d3dd210d06",
       })
     );
   } else {

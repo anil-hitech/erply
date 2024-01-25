@@ -18,19 +18,21 @@ import { priceFormatter } from "./helpers";
 import { useFilterContext } from "../../context/FilterContext";
 
 const Orders = () => {
+  const [params] = useSearchParams();
+  const type1 = params?.get("type1");
+  const type2 = params?.get("type2");
+
   const [users, setUsers] = useState([]);
   const [pagination, setPagination] = useState(null);
-  const [perPageSize, setPerPageSize] = useState(20);
-  const [currentPageNo, setCurrentPageNo] = useState(2);
+  const [perPageSize, setPerPageSize] = useState(type1 === "order" ? 20 : 1000);
+  const [currentPageNo, setCurrentPageNo] = useState(
+    type1 === "order" ? 1 : ""
+  );
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [params] = useSearchParams();
   const clientDetail = JSON.parse(localStorage?.getItem("clientDetail"));
   const { filters } = useFilterContext();
-
-  const type1 = params?.get("type1");
-  const type2 = params?.get("type2");
 
   const clientCode = clientDetail.clientCode;
   const authKey = clientDetail.sessionKey;
@@ -136,8 +138,8 @@ const Orders = () => {
                 // pageIndex={2}
               />
               <Pager
-                visible={true}
-                allowedPageSizes={[2, 5, 100]} // Define available page sizes
+                visible={type1 === "order" ? true : false}
+                allowedPageSizes={[20, 50, 100]} // Define available page sizes
                 showPageSizeSelector={true} // Display the page size selector
                 showInfo={true}
                 infoText={`Page ${pagination.from} to ${pagination.to} (${pagination.total} items)`}

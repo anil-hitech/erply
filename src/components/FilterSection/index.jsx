@@ -117,6 +117,10 @@ const FilterSection = () => {
             label="Customer Filter"
             onChange={(e) => {
               setCustomerSearchText(e.target.value);
+              // setLocalFilters((prev) => ({
+              //   ...prev,
+              //   customerID: "",
+              // }));
             }}
           />
         )}
