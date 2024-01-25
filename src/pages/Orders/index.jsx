@@ -62,7 +62,7 @@ const Orders = () => {
 
   const handlePageSizeChange = (newPageSize) => setPerPageSize(newPageSize);
 
-  const handleCurrentIndexChange = (newIndex) => setCurrentPageNo(newIndex);
+  // const handleCurrentIndexChange = (newIndex) => setCurrentPageNo(newIndex);
 
   const getUsersData = async () => {
     const clientCode = clientDetail?.clientCode;
@@ -87,7 +87,11 @@ const Orders = () => {
 
   useEffect(() => {
     getUsersData();
-  }, [type1, type2, filters, perPageSize]);
+  }, [type1, type2, filters]);
+
+  useEffect(() => {
+    if (type1 === "order") getUsersData();
+  }, [perPageSize]);
 
   // console.log(users);
   return (
@@ -133,17 +137,21 @@ const Orders = () => {
               <Paging
                 pageSize={perPageSize}
                 onPageSizeChange={handlePageSizeChange}
-                onPageIndexChange={handleCurrentIndexChange}
-                defaultPageIndex={2}
+                // defaultPageIndex={0}
+                // onPageIndexChange={handleCurrentIndexChange}
                 // pageIndex={2}
               />
               <Pager
-                visible={type1 === "order" ? true : false}
-                allowedPageSizes={[20, 50, 100]} // Define available page sizes
+                visible={true}
+                allowedPageSizes={[1, 2, 100]} // Define available page sizes
                 showPageSizeSelector={true} // Display the page size selector
                 showInfo={true}
-                infoText={`Page ${pagination.from} to ${pagination.to} (${pagination.total} items)`}
-                // showNavigationButtons={true}
+                infoText={
+                  type1 === "order"
+                    ? `Page ${pagination.from} to ${pagination.to} (${pagination.total} items)`
+                    : undefined
+                }
+                showNavigationButtons={true}
               />
               <Scrolling rowRenderingMode="virtual" />
             </DataGrid>
