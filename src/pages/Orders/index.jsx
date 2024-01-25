@@ -24,7 +24,7 @@ const Orders = () => {
 
   const [users, setUsers] = useState([]);
   const [pagination, setPagination] = useState(null);
-  const [perPageSize, setPerPageSize] = useState(type1 === "order" ? 20 : 1000);
+  const [perPageSize, setPerPageSize] = useState(20);
   const [currentPageNo, setCurrentPageNo] = useState(
     type1 === "order" ? 1 : ""
   );
@@ -71,11 +71,12 @@ const Orders = () => {
     const customerID = filters.customerID;
     const from = filters.fromDate;
     const to = filters.toDate;
+    const fetchPerPageSize = type1 === "order" ? perPageSize : 1000;
 
     setIsLoading(true);
     await api
       .get(
-        `orderReportDetail.php?clientCode=${clientCode}&sessionKey=${sessionKey}&type=${type1}&type2=${type2}&locationID=${locationID}&customerID=${customerID}&from=${from}&to=${to}&perPage=${perPageSize}&pageNo=${currentPageNo}`
+        `orderReportDetail.php?clientCode=${clientCode}&sessionKey=${sessionKey}&type=${type1}&type2=${type2}&locationID=${locationID}&customerID=${customerID}&from=${from}&to=${to}&perPage=${fetchPerPageSize}&pageNo=${currentPageNo}`
       )
       .then((res) => {
         setUsers(res?.data.data ?? []);
