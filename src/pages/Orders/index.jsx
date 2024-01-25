@@ -143,7 +143,7 @@ const Orders = () => {
               />
               <Pager
                 visible={true}
-                allowedPageSizes={[1, 2, 100]} // Define available page sizes
+                allowedPageSizes={[20, 50, 100]} // Define available page sizes
                 showPageSizeSelector={true} // Display the page size selector
                 showInfo={true}
                 infoText={
