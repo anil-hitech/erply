@@ -169,7 +169,7 @@ const Orders = () => {
                 showInfo={true}
                 infoText={
                   type1 === "order"
-                    ? `Page ${pagination.from} to ${pagination.to} (${pagination.total} items)`
+                    ? `Page ${pagination.from} of ${pagination.to} (${pagination.total} items)`
                     : undefined
                 }
                 showNavigationButtons={true}
