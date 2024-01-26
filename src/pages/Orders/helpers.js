@@ -6,7 +6,7 @@ export const priceFormatter = (value) =>
         style: "currency",
         currency: "USD",
       })
-    : ` $${value}`;
+    : ` $${Number(value).toLocaleString()}`;
 
 export const handleNullValue = (value) => {
   return value !== null ? Number(value) : 0;

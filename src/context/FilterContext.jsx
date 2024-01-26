@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 const FilterContext = createContext();
 
 const initialFilters = {
+  orderNo: "",
   customerID: "",
   locationID: "",
   fromDate: "",
@@ -42,7 +43,7 @@ const FilterContextProvider = ({ children }) => {
     setIsLoading(true);
     await api
       .get(
-        `orderReportSummary.php?clientCode=${clientDetail?.clientCode}&sessionKey=${clientDetail?.sessionKey}&locationID=${filters.locationID}&customerID=${filters.customerID}&from=${from}&to=${to}`
+        `orderReportSummary.php?clientCode=${clientDetail?.clientCode}&sessionKey=${clientDetail?.sessionKey}&orderNo=${filters.orderNo}&locationID=${filters.locationID}&customerID=${filters.customerID}&from=${from}&to=${to}`
       )
       .then((res) => {
         setSummaryDetails(res.data);

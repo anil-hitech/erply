@@ -25,9 +25,8 @@ const Orders = () => {
   const [users, setUsers] = useState([]);
   const [pagination, setPagination] = useState(null);
   const [perPageSize, setPerPageSize] = useState(20);
-  const [currentPageNo, setCurrentPageNo] = useState(
-    type1 === "order" ? 1 : ""
-  );
+  const [currentPageNo, setCurrentPageNo] = useState(1);
+  const [preCalcTotalSummary, setPreCalcTotalSummary] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -62,11 +61,12 @@ const Orders = () => {
 
   const handlePageSizeChange = (newPageSize) => setPerPageSize(newPageSize);
 
-  // const handleCurrentIndexChange = (newIndex) => setCurrentPageNo(newIndex);
+  const handleCurrentIndexChange = (newIndex) => setCurrentPageNo(newIndex);
 
   const getUsersData = async () => {
     const clientCode = clientDetail?.clientCode;
     const sessionKey = clientDetail?.sessionKey;
+    const orderNo = filters.orderNo;
     const locationID = filters.locationID;
     const customerID = filters.customerID;
     const from = filters.fromDate;
@@ -76,11 +76,12 @@ const Orders = () => {
     setIsLoading(true);
     await api
       .get(
-        `orderReportDetail.php?clientCode=${clientCode}&sessionKey=${sessionKey}&type=${type1}&type2=${type2}&locationID=${locationID}&customerID=${customerID}&from=${from}&to=${to}&perPage=${fetchPerPageSize}&pageNo=${currentPageNo}`
+        `orderReportDetail.php?clientCode=${clientCode}&sessionKey=${sessionKey}&type=${type1}&type2=${type2}&orderNo=${orderNo}&locationID=${locationID}&customerID=${customerID}&from=${from}&to=${to}&perPage=${fetchPerPageSize}&pageNo=${currentPageNo}`
       )
       .then((res) => {
         setUsers(res?.data.data ?? []);
         setPagination(res?.data.paginateData);
+        setPreCalcTotalSummary(res.data?.totalData);
       });
 
     setIsLoading(false);
@@ -116,31 +117,50 @@ const Orders = () => {
               allowColumnResizing={true}
               rowAlternationEnabled={true}
               onCellClick={handleCellClick}
+              remoteOperations={{ Pager: true, paging: true }}
             >
               {columns.map((column, index) => (
                 <Column key={index} {...column} />
               ))}
               <FilterRow visible={true} />
+              {/* <Summary totalItems={[{ name: "netTotal", value: "dff" }]}> */}
               <Summary>
-                {summaryRow.map((col, index) => (
-                  <TotalItem
-                    key={index}
-                    column={col}
-                    summaryType="sum"
-                    displayFormat={(value) =>
-                      col !== "netTotal"
-                        ? parseInt(value).toLocaleString()
-                        : priceFormatter(value)
-                    } // Optional formatting
-                  />
-                ))}
+                {type1 === "lineItem" &&
+                  summaryRow.map((col, index) => (
+                    <TotalItem
+                      key={index}
+                      column={col}
+                      summaryType="sum"
+                      displayFormat={(value) =>
+                        col !== "netTotal"
+                          ? parseInt(value).toLocaleString()
+                          : priceFormatter(value)
+                      } // Optional formatting
+                    />
+                  ))}
+
+                {type1 === "order" &&
+                  summaryRow.map((colName, index) => (
+                    <TotalItem
+                      key={index}
+                      column={colName}
+                      summaryType="sum"
+                      displayFormat={() =>
+                        colName !== "netTotal"
+                          ? parseInt(
+                              preCalcTotalSummary[colName]
+                            ).toLocaleString()
+                          : priceFormatter(preCalcTotalSummary[colName])
+                      } // Optional formatting
+                    />
+                  ))}
               </Summary>
               <Paging
                 pageSize={perPageSize}
                 onPageSizeChange={handlePageSizeChange}
-                // defaultPageIndex={0}
-                // onPageIndexChange={handleCurrentIndexChange}
-                // pageIndex={2}
+                // defaultPageIndex={5}
+                // onPageIndexChange={ handleCurrentIndexChange}
+                // pageIndex={5}
               />
               <Pager
                 visible={true}

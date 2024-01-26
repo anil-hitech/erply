@@ -95,6 +95,17 @@ const FilterSection = () => {
       alignSelf={"center"}
       flexWrap={"wrap"}
     >
+      <TextField
+        size="small"
+        label="Order No. Filter"
+        variant="outlined"
+        value={localFilters.orderNo}
+        onChange={(e) => {
+          if (!isNaN(Number(e.target.value)) || e.target.value.length === 0)
+            setLocalFilters((prev) => ({ ...prev, orderNo: e.target.value }));
+        }}
+      />
+
       <Autocomplete
         disablePortal
         size="small"
@@ -200,7 +211,7 @@ const FilterSection = () => {
         {/* <Box> */}
         <Button
           variant="contained"
-          sx={{ width: "150px" }}
+          sx={{ width: "120px" }}
           onClick={handleFilter}
         >
           Filter
@@ -211,7 +222,7 @@ const FilterSection = () => {
         <Button
           variant="contained"
           color="warning"
-          sx={{ width: "150px" }}
+          sx={{ width: "120px" }}
           onClick={() => {
             setLocalFilters(initialFilters);
             setFilters(initialFilters);

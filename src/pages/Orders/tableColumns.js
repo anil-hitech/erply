@@ -103,12 +103,12 @@ const columns = [
 export const summaryRow = [
   "netTotal",
   "ordered",
-  "open",
+  // "open",
   "onVA",
   "onHold",
   "onEmb",
-  "invoiced",
-  "received",
+  // "invoiced",
+  // "received",
 ];
 
 export default columns;
