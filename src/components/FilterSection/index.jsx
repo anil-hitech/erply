@@ -101,8 +101,8 @@ const FilterSection = () => {
         variant="outlined"
         value={localFilters.orderNo}
         onChange={(e) => {
-          if (!isNaN(Number(e.target.value)) || e.target.value.length === 0)
-            setLocalFilters((prev) => ({ ...prev, orderNo: e.target.value }));
+          // if (!isNaN(Number(e.target.value)) || e.target.value.length === 0) // only number is allowed
+          setLocalFilters((prev) => ({ ...prev, orderNo: e.target.value }));
         }}
       />
 

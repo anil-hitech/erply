@@ -12,7 +12,14 @@ a {
 .showPointer {
   cursor: pointer;
 }
+/*hide pager from datagrid table*/
+.dx-pager .dx-info {
+  visibility: hidden !important;
+}
 
+.dx-pager .dx-page-indexes {
+  visibility: hidden !important;
+}
 /* .dx-widget.dx-datagrid-pager.dx-pager {
   display: block !important;
 } */

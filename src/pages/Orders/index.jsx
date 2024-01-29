@@ -16,11 +16,14 @@ import {
 import api from "../../api";
 import { priceFormatter } from "./helpers";
 import { useFilterContext } from "../../context/FilterContext";
+import { Pagination, Stack, Typography } from "@mui/material";
 
 const Orders = () => {
   const [params] = useSearchParams();
   const type1 = params?.get("type1");
   const type2 = params?.get("type2");
+
+  const isType1Order = type1 === "order" ? true : false;
 
   const [users, setUsers] = useState([]);
   const [pagination, setPagination] = useState(null);
@@ -35,6 +38,8 @@ const Orders = () => {
 
   const clientCode = clientDetail.clientCode;
   const authKey = clientDetail.sessionKey;
+
+  const usersLength = users.length;
 
   // const classes = useStyles();
 
@@ -61,8 +66,6 @@ const Orders = () => {
 
   const handlePageSizeChange = (newPageSize) => setPerPageSize(newPageSize);
 
-  const handleCurrentIndexChange = (newIndex) => setCurrentPageNo(newIndex);
-
   const getUsersData = async () => {
     const clientCode = clientDetail?.clientCode;
     const sessionKey = clientDetail?.sessionKey;
@@ -71,7 +74,7 @@ const Orders = () => {
     const customerID = filters.customerID;
     const from = filters.fromDate;
     const to = filters.toDate;
-    const fetchPerPageSize = type1 === "order" ? perPageSize : 1000;
+    const fetchPerPageSize = isType1Order ? perPageSize + 1 : 1000;
 
     setIsLoading(true);
     await api
@@ -92,7 +95,7 @@ const Orders = () => {
   }, [type1, type2, filters]);
 
   useEffect(() => {
-    if (type1 === "order") getUsersData();
+    if (isType1Order) getUsersData();
   }, [perPageSize]);
 
   // console.log(users);
@@ -112,12 +115,12 @@ const Orders = () => {
               width={"100%"}
               height={"80vh"}
               dataSource={users}
+              // dataSource={customDataSource}
               showBorders={true}
               columns={columns}
               allowColumnResizing={true}
               rowAlternationEnabled={true}
               onCellClick={handleCellClick}
-              remoteOperations={{ Pager: true, paging: true }}
             >
               {columns.map((column, index) => (
                 <Column key={index} {...column} />
@@ -139,7 +142,7 @@ const Orders = () => {
                     />
                   ))}
 
-                {type1 === "order" &&
+                {isType1Order &&
                   summaryRow.map((colName, index) => (
                     <TotalItem
                       key={index}
@@ -158,9 +161,9 @@ const Orders = () => {
               <Paging
                 pageSize={perPageSize}
                 onPageSizeChange={handlePageSizeChange}
-                // defaultPageIndex={5}
-                // onPageIndexChange={ handleCurrentIndexChange}
-                // pageIndex={5}
+                // defaultPageIndex={}
+                pageIndex={currentPageNo - 1}
+                onPageIndexChange={(newIndex) => setCurrentPageNo(newIndex)}
               />
               <Pager
                 visible={true}
@@ -168,17 +171,67 @@ const Orders = () => {
                 showPageSizeSelector={true} // Display the page size selector
                 showInfo={true}
                 infoText={
-                  type1 === "order"
+                  isType1Order
                     ? `Page ${pagination.from} of ${pagination.to} (${pagination.total} items)`
                     : undefined
                 }
                 showNavigationButtons={true}
               />
+
               <Scrolling rowRenderingMode="virtual" />
             </DataGrid>
           </>
         )
       )}
+      <Stack
+        sx={{
+          float: "right",
+          position: "relative",
+          top: "-40px",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        {!isType1Order && (
+          <>
+            <Typography sx={{ marginRight: "20px", fontSize: "0.9em" }}>
+              Page {currentPageNo} of{" "}
+              {usersLength % perPageSize === 0
+                ? parseInt(usersLength / perPageSize)
+                : parseInt(usersLength / perPageSize) + 1}{" "}
+              &#40;
+              {usersLength} items&#41;
+            </Typography>
+            <Pagination
+              count={
+                usersLength % perPageSize === 0
+                  ? parseInt(usersLength / perPageSize)
+                  : parseInt(usersLength / perPageSize) + 1
+              }
+              page={currentPageNo}
+              onChange={(e, pageNo) => {
+                setCurrentPageNo(pageNo);
+              }}
+            />
+          </>
+        )}
+
+        {isType1Order && (
+          <>
+            <Typography sx={{ marginRight: "20px", fontSize: "0.9em" }}>
+              Page {pagination?.from} of {pagination?.to} &#40;
+              {pagination?.total} items&#41;
+            </Typography>
+            <Pagination
+              count={pagination.to}
+              page={currentPageNo}
+              onChange={(e, pageNo) => {
+                setCurrentPageNo(pageNo);
+              }}
+            />
+          </>
+        )}
+      </Stack>
     </div>
   );
 };
