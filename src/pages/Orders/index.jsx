@@ -95,17 +95,12 @@ const Orders = () => {
 
   useEffect(() => {
     getUsersData();
+    setCurrentPageNo(1);
   }, [type1, type2, filters]);
 
   useEffect(() => {
     if (isType1Order) getUsersData();
-  }, [currentPageNo]);
-
-  useEffect(() => {
-    if (isType1Order) {
-      getUsersData();
-    }
-  }, [perPageSize]);
+  }, [currentPageNo, perPageSize]);
 
   // console.log(pagination);
   return (
