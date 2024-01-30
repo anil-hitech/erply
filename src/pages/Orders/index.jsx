@@ -30,6 +30,7 @@ const Orders = () => {
   const [perPageSize, setPerPageSize] = useState(20);
   const [currentPageNo, setCurrentPageNo] = useState(1);
   const [preCalcTotalSummary, setPreCalcTotalSummary] = useState(null);
+  const [isFetchPageNoSet, setIsFetchPageNoSet] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -74,17 +75,19 @@ const Orders = () => {
     const customerID = filters.customerID;
     const from = filters.fromDate;
     const to = filters.toDate;
-    const fetchPerPageSize = isType1Order ? perPageSize + 1 : 1000;
+    const fetchPerPageSize = isType1Order ? perPageSize : 1000;
+    const fetchPageNo = isFetchPageNoSet ? currentPageNo : 1;
 
     setIsLoading(true);
     await api
       .get(
-        `orderReportDetail.php?clientCode=${clientCode}&sessionKey=${sessionKey}&type=${type1}&type2=${type2}&orderNo=${orderNo}&locationID=${locationID}&customerID=${customerID}&from=${from}&to=${to}&perPage=${fetchPerPageSize}&pageNo=${currentPageNo}`
+        `orderReportDetail.php?clientCode=${clientCode}&sessionKey=${sessionKey}&type=${type1}&type2=${type2}&orderNo=${orderNo}&locationID=${locationID}&customerID=${customerID}&from=${from}&to=${to}&perPage=${fetchPerPageSize}&pageNo=${fetchPageNo}`
       )
       .then((res) => {
         setUsers(res?.data.data ?? []);
         setPagination(res?.data.paginateData);
-        setPreCalcTotalSummary(res.data?.totalData);
+        setPreCalcTotalSummary(res.data?.totalData || 0);
+        setIsFetchPageNoSet(false);
       });
 
     setIsLoading(false);
@@ -96,9 +99,15 @@ const Orders = () => {
 
   useEffect(() => {
     if (isType1Order) getUsersData();
+  }, [currentPageNo]);
+
+  useEffect(() => {
+    if (isType1Order) {
+      getUsersData();
+    }
   }, [perPageSize]);
 
-  // console.log(users);
+  console.log(pagination);
   return (
     <div>
       {isLoading ? (
@@ -172,7 +181,7 @@ const Orders = () => {
                 showInfo={true}
                 infoText={
                   isType1Order
-                    ? `Page ${pagination.from} of ${pagination.to} (${pagination.total} items)`
+                    ? `Page ${pagination?.from} of ${pagination?.to} (${pagination?.total} items)`
                     : undefined
                 }
                 showNavigationButtons={true}
@@ -200,7 +209,7 @@ const Orders = () => {
                 ? parseInt(usersLength / perPageSize)
                 : parseInt(usersLength / perPageSize) + 1}{" "}
               &#40;
-              {usersLength} items&#41;
+              {usersLength.toLocaleString()} items&#41;
             </Typography>
             <Pagination
               count={
@@ -220,13 +229,14 @@ const Orders = () => {
           <>
             <Typography sx={{ marginRight: "20px", fontSize: "0.9em" }}>
               Page {pagination?.from} of {pagination?.to} &#40;
-              {pagination?.total} items&#41;
+              {pagination?.total.toLocaleString()} Items&#41;
             </Typography>
             <Pagination
-              count={pagination.to}
-              page={currentPageNo}
+              count={pagination?.to || 1}
+              page={pagination?.from || 1}
               onChange={(e, pageNo) => {
                 setCurrentPageNo(pageNo);
+                setIsFetchPageNoSet(true);
               }}
             />
           </>
