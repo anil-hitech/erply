@@ -94,8 +94,8 @@ const Orders = () => {
   };
 
   useEffect(() => {
-    getUsersData();
     setCurrentPageNo(1);
+    getUsersData();
   }, [type1, type2, filters]);
 
   useEffect(() => {
