@@ -85,7 +85,7 @@ const FilterSection = () => {
 
   return (
     <Box
-      position={"absolute"}
+      // position={"absolute"}
       width={"100%"}
       display={"flex"}
       flexDirection={"row"}
@@ -94,6 +94,7 @@ const FilterSection = () => {
       gap={"20px"}
       alignSelf={"center"}
       flexWrap={"wrap"}
+      py="10px"
     >
       <TextField
         size="small"

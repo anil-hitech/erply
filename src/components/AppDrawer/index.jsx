@@ -83,6 +83,7 @@ export default function AppDrawer() {
   const location = useLocation();
   // console.log(location);
 
+  const appBarRef = React.useRef(null);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -97,7 +98,8 @@ export default function AppDrawer() {
       <AppBar
         position="fixed"
         open={open}
-        sx={{ backgroundColor: "white", height: "auto" }}
+        sx={{ backgroundColor: "white" }}
+        ref={appBarRef}
       >
         <Toolbar sx={{ height: "auto" }}>
           <IconButton
@@ -244,7 +246,14 @@ export default function AppDrawer() {
         </List> */}
       </DrawerMui>
       <Main open={open} sx={{ padding: 0, margin: "20px" }}>
-        <DrawerHeader />
+        <DrawerHeader
+          sx={{
+            height:
+              appBarRef.current !== null
+                ? appBarRef.current.clientHeight
+                : "64px",
+          }}
+        />
         {/* <FilterSection /> */}
         <Outlet />
       </Main>

@@ -192,56 +192,58 @@ const Orders = () => {
           </>
         )
       )}
-      <Stack
-        sx={{
-          float: "right",
-          position: "relative",
-          top: "-40px",
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-      >
-        {!isType1Order && (
-          <>
-            <Typography sx={{ marginRight: "20px", fontSize: "0.9em" }}>
-              Page {currentPageNo} of{" "}
-              {usersLength % perPageSize === 0
-                ? parseInt(usersLength / perPageSize)
-                : parseInt(usersLength / perPageSize) + 1}{" "}
-              &#40;
-              {usersLength.toLocaleString()} items&#41;
-            </Typography>
-            <Pagination
-              count={
-                usersLength % perPageSize === 0
+      {!isLoading && (
+        <Stack
+          sx={{
+            float: "right",
+            position: "relative",
+            top: "-40px",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          {!isType1Order && (
+            <>
+              <Typography sx={{ marginRight: "20px", fontSize: "0.9em" }}>
+                Page {currentPageNo} of{" "}
+                {usersLength % perPageSize === 0
                   ? parseInt(usersLength / perPageSize)
-                  : parseInt(usersLength / perPageSize) + 1
-              }
-              page={currentPageNo}
-              onChange={(e, pageNo) => {
-                setCurrentPageNo(pageNo);
-              }}
-            />
-          </>
-        )}
+                  : parseInt(usersLength / perPageSize) + 1}{" "}
+                &#40;
+                {usersLength.toLocaleString()} items&#41;
+              </Typography>
+              <Pagination
+                count={
+                  usersLength % perPageSize === 0
+                    ? parseInt(usersLength / perPageSize)
+                    : parseInt(usersLength / perPageSize) + 1
+                }
+                page={currentPageNo}
+                onChange={(e, pageNo) => {
+                  setCurrentPageNo(pageNo);
+                }}
+              />
+            </>
+          )}
 
-        {isType1Order && (
-          <>
-            <Typography sx={{ marginRight: "20px", fontSize: "0.9em" }}>
-              Page {pagination?.from} of {pagination?.to} &#40;
-              {pagination?.total.toLocaleString()} Items&#41;
-            </Typography>
-            <Pagination
-              count={pagination?.to || 1}
-              page={pagination?.from || 1}
-              onChange={(e, pageNo) => {
-                setCurrentPageNo(pageNo);
-                setIsFetchPageNoSet(true);
-              }}
-            />
-          </>
-        )}
-      </Stack>
+          {isType1Order && (
+            <>
+              <Typography sx={{ marginRight: "20px", fontSize: "0.9em" }}>
+                Page {pagination?.from} of {pagination?.to} &#40;
+                {pagination?.total.toLocaleString()} Items&#41;
+              </Typography>
+              <Pagination
+                count={pagination?.to || 1}
+                page={pagination?.from || 1}
+                onChange={(e, pageNo) => {
+                  setCurrentPageNo(pageNo);
+                  setIsFetchPageNoSet(true);
+                }}
+              />
+            </>
+          )}
+        </Stack>
+      )}
     </div>
   );
 };
