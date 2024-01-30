@@ -107,7 +107,7 @@ const Orders = () => {
     }
   }, [perPageSize]);
 
-  console.log(pagination);
+  // console.log(pagination);
   return (
     <div>
       {isLoading ? (
