@@ -9,10 +9,10 @@ const Layout = () => {
     localStorage?.setItem(
       "clientDetail",
       JSON.stringify({
-        // clientCode: "606950",
-        // sessionKey: "2215ad8e6dce871baeaec04439e8210e797e50e31085",
-        clientCode: "603424",
-        sessionKey: "00224759b3b64a65085721d3fe7a893842dd25be4327",
+        clientCode: "606950",
+        sessionKey: "574ef692c44fac9c317db4ea6da4cdad775f3b1a6afb",
+        // clientCode: "603424",
+        // sessionKey: "00224759b3b64a65085721d3fe7a893842dd25be4327",
       })
     );
   } else {
