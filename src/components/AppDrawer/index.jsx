@@ -93,14 +93,15 @@ export default function AppDrawer() {
     setOpen(false);
   };
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const handleHeightResize = () => {
       setAppBarHeight(appBarRef.current.clientHeight);
+      console.log("hello");
     };
 
     handleHeightResize();
     window.addEventListener("resize", handleHeightResize);
-    return removeEventListener("resize", handleHeightResize);
+    return () => removeEventListener("resize", handleHeightResize);
   }, [appBarRef]);
 
   return (
