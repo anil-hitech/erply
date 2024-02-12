@@ -96,7 +96,6 @@ export default function AppDrawer() {
   React.useLayoutEffect(() => {
     const handleHeightResize = () => {
       setAppBarHeight(appBarRef.current.clientHeight);
-      console.log("hello");
     };
 
     handleHeightResize();
