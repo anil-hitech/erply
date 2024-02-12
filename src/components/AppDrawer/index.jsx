@@ -82,6 +82,7 @@ export default function AppDrawer() {
   const [open, setOpen] = React.useState(true);
   const location = useLocation();
   // console.log(location);
+  const [appBarHeight, setAppBarHeight] = React.useState(0);
 
   const appBarRef = React.useRef(null);
   const handleDrawerOpen = () => {
@@ -91,6 +92,16 @@ export default function AppDrawer() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  React.useEffect(() => {
+    const handleHeightResize = () => {
+      setAppBarHeight(appBarRef.current.clientHeight);
+    };
+
+    handleHeightResize();
+    window.addEventListener("resize", handleHeightResize);
+    return removeEventListener("resize", handleHeightResize);
+  }, [appBarRef]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -248,10 +259,7 @@ export default function AppDrawer() {
       <Main open={open} sx={{ padding: 0, margin: "20px" }}>
         <DrawerHeader
           sx={{
-            height:
-              appBarRef.current !== null
-                ? appBarRef.current.clientHeight
-                : "64px",
+            height: appBarHeight,
           }}
         />
         {/* <FilterSection /> */}
